@@ -1,0 +1,12 @@
+version: '3'
+services:
+  puzzle-php:
+    container_name: puzzle-php
+    image: php:7.3-fpm
+    networks:
+      - isolated_nw
+    volumes:
+      - ./:/var/www/html/puzzle:rw
+#      - ~/.temp_projects/puzzle/docker_persistence/php/log/php5-fpm:/var/log/php5-fpm:rw
+networks:
+  isolated_nw:
