@@ -1,13 +1,19 @@
 <?php
 /**
- * @author: Alejandro Martínez Peregrina
- * @date: 8/01/19
+ * Created by PhpStorm.
+ * User: alejandro.martinez
+ * Date: 8/01/19
+ * Time: 17:24
  */
 
 class NonValidPieceException extends Exception
 {
-    public function __construct($message = "The piece is not valid.")
+
+    /**
+     * NonValidPieceException constructor.
+     */
+    public function __construct($message = 'The piece is not valid.')
     {
-        parent::__construct($message);
     }
+
 }

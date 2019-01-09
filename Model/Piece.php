@@ -101,5 +101,21 @@ class Piece
         );
     }
 
+    /**
+     * @param Condition $condition
+     * @return bool
+     */
+    public function meets(Condition $condition)
+    {
+        $conditions = $condition->getConditions();
+
+        return (
+            (empty($conditions['left']) || $conditions['left'] === $this->sides[0]) &&
+            (empty($conditions['top']) || $conditions['top'] === $this->sides[1]) &&
+            (empty($conditions['right']) || $conditions['right'] === $this->sides[2]) &&
+            (empty($conditions['bottom']) || $conditions['bottom'] === $this->sides[3])
+        );
+
+    }
 
 }

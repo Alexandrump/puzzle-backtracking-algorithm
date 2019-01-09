@@ -7,54 +7,33 @@
 class Puzzle
 {
     /** @var Piece[] */
-    private $pieces;
+    private $placedPieces;
 
     /** @var Board */
     private $board;
 
-    /** @var Board */
-    private $testingBoard;
+    /** @var Condition */
+    private $currentCondition;
 
-    /** @var int */
-    private $maxPieceSide;
-
-    /** @var int */
-    private $minPieceSize;
-
-    /** @var Board[] */
-    private $solutions;
-
-    /** @var bool */
-    private $isRunning;
 
     /**
      * Puzzle constructor.
-     * @param array $pieces
+     * @param array $placedPieces
      * @param Board $board
-     * @param Board $testingBoard
-     * @param int $maxPieceSide
-     * @param int $minPieceSize
-     * @param array $solutions
-     * @param bool $isRunning
+     * @param null $initialState
      */
     public function __construct(
-        array $pieces,
+        array $placedPieces,
         Board $board,
-        Board $testingBoard,
-        int $maxPieceSide,
-        int $minPieceSize,
-        array $solutions,
-        bool $isRunning
+        $initialState = null
     )
     {
-        $this->pieces = $pieces;
+        $this->placedPieces = $placedPieces;
         $this->board = $board;
-        $this->testingBoard = $testingBoard;
-        $this->maxPieceSide = $maxPieceSide;
-        $this->minPieceSize = $minPieceSize;
-        $this->solutions = $solutions;
-        $this->isRunning = $isRunning;
+        $this->recalculateCondition();
     }
+
+
 
     /**
      * @return Piece[]
@@ -73,43 +52,50 @@ class Puzzle
     }
 
     /**
-     * @return Board
+     * @return Condition
      */
-    public function getTestingBoard(): Board
+    public function getCurrentCondition(): Condition
     {
-        return $this->testingBoard;
+        return $this->currentCondition;
     }
 
     /**
-     * @return int
+     * @return Piece[]
      */
-    public function getMaxPieceSide(): int
+    public function getUsedPieces(): array
     {
-        return $this->maxPieceSide;
+        return $this->usedPieces;
     }
+
 
     /**
-     * @return int
+     * @param $piece
+     * @return Puzzle
      */
-    public function getMinPieceSize(): int
+    public function placePiece(Piece $piece): Puzzle
     {
-        return $this->minPieceSize;
+        if ($piece->meets($this->getCurrentCondition())
+        ) {
+            $puzzle = new Puzzle($this->getPieces(), $this->getBoard());
+
+            return $puzzle;
+        }
+        return UnsolvablePuzzle::create();
     }
 
-    /**
-     * @return Board[]
-     */
-    public function getSolutions(): array
+    private function recalculateCondition(Piece $piece): Condition
     {
-        return $this->solutions;
+        $condition = ''; //Condicion a satisfacer
+
+        if ($piece->meets($condition)) {
+
+        }
     }
 
-    /**
-     * @return bool
-     */
-    public function isRunning(): bool
+    private function recalculateUsedPieces(Piece $piece): array
     {
-        return $this->isRunning;
+
     }
 
+    toString();
 }

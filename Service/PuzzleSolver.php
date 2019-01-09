@@ -11,20 +11,25 @@ class PuzzleSolver
      * @param Piece[] $remainingPieces
      * @return string
      */
-    public function solve(Puzzle $puzzle, array $remainingPieces)
+    public function solve(Puzzle $puzzle, array $remainingPieces, Puzzle $alreadyFoundSolution = null
     {
-
-        if (!$puzzle->isRunning()) {
-            return;
+        if (count($remainingPieces) === 0 || $puzzle instanceof UnsolvablePuzzle) {
+            return $puzzle;
         }
 
-        if (count($remainingPieces) === 0) {
-            $this->addSolution(
-                $puzzle->getSolutions(),
-                $puzzle->getTestingBoard()
+        foreach ($remainingPieces as $piece) {
+            $puzzle = $this->solve(
+                $puzzle->placePiece($piece),
+                $remainingPieces->remove($piece)
             );
-            return;
+
+            if (!$puzzle instanceof UnsolvablePuzzle) {
+                return $puzzle;
+            }
         }
+        return UnsolvablePuzzle::create();
+    }
+
 //        minPieceSize : = minPieceSize(remainingPieces)
 //
 //	// loops over the remaining pieces
@@ -77,6 +82,5 @@ class PuzzleSolver
 //		}
 //	}
 //}
-    }
 
 }
