@@ -6,6 +6,8 @@
  * Time: 13:18
  */
 
+namespace Application\Service;
+
 class MatchFinder
 {
 

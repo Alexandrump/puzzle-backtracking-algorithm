@@ -4,26 +4,33 @@
  * @date: 8/01/19
  */
 
+namespace Model;
+
+use Model\Exception\NonValidPieceException;
+
 class Piece
 {
     const PIECE_SIDES = 4;
     const MAXIMUM_OUTER_SIDES = 2;
     const OUTER_SIDE_PART = 0;
 
+    /** @var int */
+    private $position;
     /** @var array */
     private $sides;
 
     /**
      * Piece constructor.
-     * @param $sides
+     * @param int $position
+     * @param array $sides
      * @throws NonValidPieceException
      */
-    public function __construct($sides)
+    public function __construct(int $position, array $sides)
     {
         if (!$this->isValid($sides)) {
             throw new NonValidPieceException();
         }
-
+        $this->position = $position;
         $this->sides = $sides;
     }
 
@@ -107,13 +114,13 @@ class Piece
      */
     public function meets(Condition $condition)
     {
-        $conditions = $condition->getConditions();
+        $sideConditions = $condition->getSideConditions();
 
         return (
-            (empty($conditions['left']) || $conditions['left'] === $this->sides[0]) &&
-            (empty($conditions['top']) || $conditions['top'] === $this->sides[1]) &&
-            (empty($conditions['right']) || $conditions['right'] === $this->sides[2]) &&
-            (empty($conditions['bottom']) || $conditions['bottom'] === $this->sides[3])
+            (empty($sideConditions['left']) || $sideConditions['left'] === $this->sides[0]) &&
+            (empty($sideConditions['top']) || $sideConditions['top'] === $this->sides[1]) &&
+            (empty($sideConditions['right']) || $sideConditions['right'] === $this->sides[2]) &&
+            (empty($sideConditions['bottom']) || $sideConditions['bottom'] === $this->sides[3])
         );
 
     }

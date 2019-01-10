@@ -4,6 +4,8 @@
  * @date: 8/01/19
  */
 
+namespace Model;
+
 class Puzzle
 {
     /** @var Piece[] */
@@ -15,25 +17,35 @@ class Puzzle
     /** @var Condition */
     private $currentCondition;
 
-
     /**
      * Puzzle constructor.
      * @param array $placedPieces
      * @param Board $board
-     * @param null $initialState
+     * @param Condition|null $initialCondition
      */
     public function __construct(
         array $placedPieces,
-        Board $board,
-        $initialState = null
+        Board $board
     )
     {
         $this->placedPieces = $placedPieces;
         $this->board = $board;
-        $this->recalculateCondition();
+        $this->currentCondition = !(empty($initialCondition)) ? $initialCondition : $this->recalculateCondition();
     }
 
+    public static function createFromCorner(
+        array $placedPieces,
+        Board $board,
+        Condition $initialCondition
+    )
+    {
+        $puzzle = new static();
+    }
 
+    public static function create()
+    {
+
+    }
 
     /**
      * @return Piece[]
@@ -60,15 +72,6 @@ class Puzzle
     }
 
     /**
-     * @return Piece[]
-     */
-    public function getUsedPieces(): array
-    {
-        return $this->usedPieces;
-    }
-
-
-    /**
      * @param $piece
      * @return Puzzle
      */
@@ -86,16 +89,13 @@ class Puzzle
     private function recalculateCondition(Piece $piece): Condition
     {
         $condition = ''; //Condicion a satisfacer
-
-        if ($piece->meets($condition)) {
-
-        }
     }
 
-    private function recalculateUsedPieces(Piece $piece): array
+    /**
+     * @return string
+     */
+    public function __toString()
     {
-
+        return '';
     }
-
-    toString();
 }

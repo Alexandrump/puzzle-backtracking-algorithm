@@ -6,6 +6,8 @@
  * Time: 12:29
  */
 
+namespace Model;
+
 class Condition
 {
     /** @var array */

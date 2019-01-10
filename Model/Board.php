@@ -4,6 +4,8 @@
  * @date: 8/01/19
  */
 
+namespace Model;
+
 class Board
 {
     /** @var int */
@@ -12,11 +14,19 @@ class Board
     /** @var int */
     private $height;
 
+    /** @var int */
+    private $totalNumberOfPieces;
 
-    public function __construct($dimension)
+    /**
+     * Board constructor.
+     * @param string $width
+     * @param string $height
+     */
+    public function __construct(string $width, string $height)
     {
-        $this->width = explode(" ", $dimension)[0];
-        $this->height = explode(" ", $dimension)[1];
+        $this->width = $width;
+        $this->height = $height;
+        $this->totalNumberOfPieces = $width * $height;
     }
 
     /**
@@ -33,6 +43,14 @@ class Board
     public function getHeight(): int
     {
         return $this->height;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalNumberOfPieces(): int
+    {
+        return $this->totalNumberOfPieces;
     }
 
 

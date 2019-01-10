@@ -6,6 +6,8 @@
  * Time: 17:05
  */
 
+namespace Model;
+
 class UnsolvablePuzzle extends Puzzle
 {
     /**

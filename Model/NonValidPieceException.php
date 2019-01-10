@@ -6,7 +6,9 @@
  * Time: 17:24
  */
 
-class NonValidPieceException extends Exception
+namespace Model\Exception;
+
+class NonValidPieceException extends \Exception
 {
 
     /**
