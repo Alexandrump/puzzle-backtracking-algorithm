@@ -1,9 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 9/01/19
- * Time: 12:29
  */
 
 namespace Model;

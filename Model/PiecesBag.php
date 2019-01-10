@@ -16,23 +16,40 @@ class PiecesBag
     /**
      * PiecesBag constructor.
      * @param array $remainingPieces
-     * @param int $totalPieces
-     * @param bool $isFull
-     * @throws NonValidPiecesBagException
      */
-    public function __construct(array $remainingPieces, int $totalPieces, bool $isFull = false)
+    public function __construct(array $remainingPieces)
     {
-
-        if ($this->initialStateNotStartable($remainingPieces, $totalPieces, $isFull)) {
-            throw new NonValidPiecesBagException();
-        }
-
         $this->remainingPieces = $remainingPieces;
     }
 
-    public static function initialize(array $remainingPieces, int $totalPieces, bool $isFull)
+    /**
+     * @param array $initialPieces
+     * @param int $totalExpectedPieces
+     * @return PiecesBag
+     * @throws NonValidPiecesBagException
+     */
+    public static function initialize(array $initialPieces, int $totalExpectedPieces)
     {
+        $piecesBag = new PiecesBag(
+            self::processPieces(
+                $initialPieces
+            )
+        );
 
+        if ($piecesBag->initialStateNotStartable($initialPieces, $totalExpectedPieces)) {
+            throw new NonValidPiecesBagException();
+        }
+
+        return $piecesBag;
+    }
+
+    /**
+     * @param $remainingPieces
+     * @return PiecesBag
+     */
+    public static function createFromArray($remainingPieces)
+    {
+        return new static($remainingPieces);
     }
 
     /**
@@ -60,16 +77,21 @@ class PiecesBag
      * @param bool $isFull
      * @return bool
      */
-    private function initialStateNotStartable(array $pieces, int $totalPieces, bool $isFull): bool
+    private function initialStateNotStartable(array $pieces, int $totalPieces): bool
     {
-        return ($isFull && count($pieces) !== $totalPieces && count($pieces) % 2 !== 0);
+        return (count($pieces) !== $totalPieces && count($pieces) % 2 !== 0);
     }
 
-    private function processPieces($pieces): array
+    /**
+     * @param Piece[] $pieces
+     * @return array
+     */
+    private static function processPieces($pieces): array
     {
-        return array_map(function () {
-
-        },
+        return array_map(
+            function ($piece) {
+                return explode(" ", $piece);
+            },
             $pieces);
     }
 

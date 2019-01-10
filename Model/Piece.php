@@ -58,7 +58,11 @@ class Piece
     {
         $newUnorderedSides = $this->sides;
         return new Piece(
-            array_unshift($newUnorderedSides[0], array_pop($newUnorderedSides))
+            $this->position,
+            array_unshift(
+                $newUnorderedSides[0],
+                array_pop($newUnorderedSides)
+            )
         );
     }
 
@@ -109,6 +113,14 @@ class Piece
     }
 
     /**
+     * @return array
+     */
+    public function getSides(): array
+    {
+        return $this->sides;
+    }
+
+    /**
      * @param Condition $condition
      * @return bool
      */
@@ -122,7 +134,5 @@ class Piece
             (empty($sideConditions['right']) || $sideConditions['right'] === $this->sides[2]) &&
             (empty($sideConditions['bottom']) || $sideConditions['bottom'] === $this->sides[3])
         );
-
     }
-
 }

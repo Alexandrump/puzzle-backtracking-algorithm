@@ -6,28 +6,36 @@
 
 namespace Application\Service;
 
+use Model\PiecesBag;
+use Model\Puzzle;
+use Model\UnsolvablePuzzle;
+
 class PuzzleSolver
 {
     /**
      * @param Puzzle $puzzle
      * @param PiecesBag $piecesBag
-     * @param Puzzle|null $alreadyFoundSolution
      * @return Puzzle|UnsolvablePuzzle
      */
-    public function solve(Puzzle $puzzle, PiecesBag $piecesBag, Puzzle $alreadyFoundSolution = null)
+    public function solve(Puzzle $puzzle, PiecesBag $piecesBag)
     {
         if (count($piecesBag->getRemainingPieces()) === 0 || $puzzle instanceof UnsolvablePuzzle) {
             return $puzzle;
         }
 
-        foreach ($piecesBag->getRemainingPieces() as $piece) {
+        $candidates = (new MatchFinder())->findValidCandidates(
+            $piecesBag->getRemainingPieces(),
+            $puzzle->getCurrentCondition()
+        );
+
+        foreach ($candidates as $piece) {
             $puzzle = $this->solve(
                 $puzzle->placePiece($piece),
                 $piecesBag->remove($piece)
             );
 
             if (!$puzzle instanceof UnsolvablePuzzle) {
-                return $puzzle;
+                yield $puzzle;
             }
         }
         return UnsolvablePuzzle::create();

@@ -28,31 +28,47 @@ class Puzzle
         Board $board
     )
     {
-        $this->placedPieces = $placedPieces;
         $this->board = $board;
-        $this->currentCondition = !(empty($initialCondition)) ? $initialCondition : $this->recalculateCondition();
+        $this->placedPieces = $placedPieces;
     }
 
+    /**
+     * @param Piece $initialPiece
+     * @param Board $board
+     * @param Condition $initialCondition
+     * @return Puzzle
+     */
     public static function createFromCorner(
-        array $placedPieces,
+        Piece $initialPiece,
         Board $board,
         Condition $initialCondition
     )
     {
-        $puzzle = new static();
+        $puzzle = new static([$initialPiece], $board);
+        $puzzle->setCurrentCondition($initialCondition);
+
+        return $puzzle;
     }
 
-    public static function create()
+    /**
+     * @param $placedPieces
+     * @param $board
+     * @return Puzzle
+     */
+    public static function create($placedPieces, $board)
     {
+        $puzzle = new static($placedPieces, $board);
+        $puzzle->recalculateCondition();
 
+        return $puzzle;
     }
 
     /**
      * @return Piece[]
      */
-    public function getPieces(): array
+    private function getPieces(): array
     {
-        return $this->pieces;
+        return $this->placedPieces;
     }
 
     /**
@@ -72,6 +88,14 @@ class Puzzle
     }
 
     /**
+     * @param Condition $currentCondition
+     */
+    private function setCurrentCondition(Condition $currentCondition): void
+    {
+        $this->currentCondition = $currentCondition;
+    }
+
+    /**
      * @param $piece
      * @return Puzzle
      */
@@ -79,16 +103,46 @@ class Puzzle
     {
         if ($piece->meets($this->getCurrentCondition())
         ) {
-            $puzzle = new Puzzle($this->getPieces(), $this->getBoard());
+            $puzzle = new Puzzle(
+                array_merge($this->getPieces(), $piece),
+                $this->getBoard()
+            );
 
             return $puzzle;
         }
         return UnsolvablePuzzle::create();
     }
 
-    private function recalculateCondition(Piece $piece): Condition
+    /**
+     * @return Condition
+     */
+    private function recalculateCondition(): Condition
     {
-        $condition = ''; //Condicion a satisfacer
+        $placedPieces = $this->getPieces();
+        $nextPosition = count($placedPieces) + 1;
+
+        if ($nextPosition == ($this->getBoard()->getWidth()) + 1) {
+
+            $topPiecePosition = $nextPosition - $this->getBoard()->getWidth();
+
+            $leftCondition = 0;
+            $topCondition = $placedPieces[$topPiecePosition]->getSides()[1];
+
+        } else {
+            $leftPiecePosition = $nextPosition - 1;
+            $topPiecePosition = $nextPosition - $this->getBoard()->getWidth();
+
+            $leftCondition = $placedPieces[$leftPiecePosition]->getSides()[0];
+            $topCondition = $placedPieces[$topPiecePosition]->getSides()[1];
+        }
+
+        return new Condition(
+            [
+                'left' => $leftCondition,
+                'top' => $topCondition
+            ]
+        );
+
     }
 
     /**
@@ -98,4 +152,5 @@ class Puzzle
     {
         return '';
     }
+
 }
