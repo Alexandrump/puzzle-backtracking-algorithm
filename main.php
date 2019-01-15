@@ -4,17 +4,33 @@
  * @date: 8/01/19
  */
 
-include 'init.php';
+require __DIR__ . '/init.php';
 
-use Application\Service\FileManager;
-use Application\Service\MatchFinder;
-use Application\Service\PuzzleSolver;
-use Model\Board;
-use Model\Condition;
-use Model\Exception\NonValidPiecesBagException;
-use Model\Piece;
-use Model\PiecesBag;
-use Model\Puzzle;
+ob_start();
+
+$response = \TalentedPanda\\DependencyInjection\ContainerLoader::instance()->get(
+    'peim.command.tracking_snapshot_report.consejo_gobierno'
+)->processExecution();
+
+if (!$response) {
+    echo "Error";
+    exit;
+}
+
+ob_clean();
+$response->prepare($request);
+$response->send();
+ob_flush();
+
+use TalentedPanda\PuzzleProblem\Service\FileManager;
+use TalentedPanda\PuzzleProblem\Service\MatchFinder;
+use TalentedPanda\PuzzleProblem\Service\PuzzleSolver;
+use TalentedPanda\PuzzleProblem\Model\Board;
+use TalentedPanda\PuzzleProblem\Model\Condition;
+use TalentedPanda\PuzzleProblem\Model\Exception\NonValidPiecesBagException;
+use TalentedPanda\PuzzleProblem\Model\Piece;
+use TalentedPanda\PuzzleProblem\Model\PiecesBag;
+use TalentedPanda\PuzzleProblem\Model\Puzzle;
 
 execute();
 
@@ -24,18 +40,18 @@ function execute()
 
     printf("Please, write the name of the file to solve (including path from your user folder): " . DIRECTORY_SEPARATOR);
 
-    $path = trim(fgets(STDIN));
-
-    $fileContent = (new FileManager())->read($path);
-
-    $dimension = array_shift($fileContent);
-
-    $board = new Board(
-        explode(" ", $dimension)[0],
-        explode(" ", $dimension)[1]
-    );
-
     try {
+        $path = trim(fgets(STDIN));
+
+        $fileContent = (new FileManager())->read($path);
+
+        $dimension = array_shift($fileContent);
+
+        $board = new Board(
+            explode(" ", $dimension)[0],
+            explode(" ", $dimension)[1]
+        );
+
         $piecesBag = PiecesBag::initialize(
             array_filter(
                 $fileContent,
@@ -47,20 +63,15 @@ function execute()
             ),
             $board->getTotalNumberOfPieces()
         );
-    } catch (NonValidPiecesBagException $nonValidPiecesBagException) {
-        printf($nonValidPiecesBagException->getMessage() . "\n");
-        exit;
-    }
 
-    //Initial piece of the puzzle needs to have two of their sides specials (0)
-    $initialCondition = new Condition(
-        [
-            'left' => 0,
-            'top' => 0
-        ]
-    );
+        //Initial piece of the puzzle needs to have two of their sides specials (0)
+        $initialCondition = new Condition(
+            [
+                'left' => 0,
+                'top' => 0
+            ]
+        );
 
-    try {
         /* There should be an instanced MatchFinder here that call method findOneCandidate()
         for the first time I put a piece.    */
         $firstPiece = (new MatchFinder())->findOneCandidate($piecesBag->getRemainingPieces(), $initialCondition);
@@ -77,13 +88,17 @@ function execute()
          */
         $solution = (new PuzzleSolver())->solve($puzzle, $piecesBag);
 
+    } catch (NonValidPiecesBagException $nonValidPiecesBagException) {
+        printf($nonValidPiecesBagException->getMessage() . "\n");
+        exit;
     } catch (Exception $exception) {
         printf($exception->getMessage());
     }
-    printf("Working on the solution...please be patient \n");
 
+    printf("Working on the solution...please be patient \n");
 
     printf("The solution for the puzzle inside the file is:");
 
     printf($solution);
+
 }

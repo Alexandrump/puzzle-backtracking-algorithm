@@ -6,7 +6,7 @@
  * Time: 11:13
  */
 
-namespace Model\Exception;
+namespace TalentedPanda\PuzzleProblem\Model\Exception;
 
 
 class NonExistentPieceException extends \Exception

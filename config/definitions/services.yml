@@ -1,0 +1,95 @@
+services:
+  # Domain
+  peim.domain.services.task_progress_state_calculator:
+    class: Dsic\Peim\Domain\Service\TaskProgressStateCalculator
+    arguments:
+      - '@peim.doctrine_repository.task_progress_state'
+      - '@peim.infrastructure.services.planification_period_configuration'
+
+  peim.domain.services.planification_checker_validation:
+    class: Dsic\Peim\Domain\Service\Checkers\PlanificationTransitionCheckerValidation
+
+  peim.domain.services.medida_progress_state_calculator:
+    class: Dsic\Peim\Domain\Service\MedidaProgressStateCalculator
+    arguments:
+      - ['@peim.medida_state_specification.pending_activation',
+         '@peim.medida_state_specification.should_be_active_but_is_not',
+         '@peim.medida_state_specification.active_with_a_critical_delay_scenario_a',
+         '@peim.medida_state_specification.active_with_a_critical_delay_scenario_b',
+         '@peim.medida_state_specification.active_with_correct_progress_scenario_a',
+         '@peim.medida_state_specification.active_with_correct_progress_scenario_b',
+         '@peim.medida_state_specification.active_with_correct_progress_scenario_c',
+         '@peim.medida_state_specification.active_but_delayed',
+         '@peim.medida_state_specification.active_but_not_reported_in_time',
+         '@peim.medida_state_specification.active_but_over_due_date',
+         '@peim.medida_state_specification.active_but_over_due_date_scenario_b',
+         '@peim.medida_state_specification.finished',
+         '@peim.medida_state_specification.all_pending_activation_and_over_due_date'
+        ]
+
+      - '@peim.doctrine_repository.medida_progress_state'
+      - '@peim.doctrine_repository.medida'
+
+  # Application Services
+
+  peim.application.services.data_transformer.ficha_word_processor:
+    class: Dsic\Peim\Application\Service\DataTransformer\FichaWordProcessor
+    arguments:
+      - '@peim.infrastructure.word_export_factory'
+      - '%word_template_path%'
+      - '%word_templates_ficha%'
+
+  peim.application.services.data_transformer.listado_word_processor:
+    class: Dsic\Peim\Application\Service\DataTransformer\ListadoWordProcessor
+    arguments:
+      - '@peim.infrastructure.word_export_factory'
+      - '%word_template_path%'
+      - '%word_template_listado%'
+
+  peim.application.services.data_transformer.consejo_gobierno_spreadsheet:
+    class: Dsic\Peim\Application\Service\DataTransformer\Spreadsheet\ConsejoGobiernoSpreadsheetTransformer
+    arguments:
+      - '@peim.service.templating'
+
+  # Infrastructure services
+
+  peim.infras.transformer.code_to_ordering_weight:
+    class: Dsic\Peim\Infrastructure\Domain\Medida\CodeToOrdeingWeightTransformer
+
+  peim.infrastructure.word_export_factory:
+    factory: ['Dsic\Peim\Infrastructure\Utils\WordExportFactory', createWithoutTemplate]
+
+  peim.infrastructure.client_variable_generator:
+    class: Dsic\Peim\Infrastructure\Framework\PhpRunner\Service\ClientVariableGenerator
+
+  peim.infrastructure.session_initializer:
+    class: Dsic\Peim\Infrastructure\Framework\PhpRunner\Service\SessionInitializer
+
+  peim.infrastructure.session_accessor:
+    class: Dsic\Peim\Infrastructure\Framework\PhpRunner\Service\SessionAccessor
+    arguments:
+      - '@peim.repository.user'
+
+  peim.infrastructure.doctrine_session_accessor:
+    class: Dsic\Peim\Infrastructure\Framework\PhpRunner\Service\DoctrineSessionAccessor
+    arguments: ['@peim.doctrine_repository.user']
+
+  peim.infrastructure.page_redirector:
+    class: Dsic\Peim\Infrastructure\HTTP\Custom\Service\PageRedirector
+
+  peim.services.db_conector:
+    factory: ['Dsic\Peim\Infrastructure\Persistence\Connector\DBConnection', create]
+    arguments: ['%database_host%', '%database_user%', '%database_password%', '%database_name%']
+
+  peim.service.state_transitioner:
+    factory: ['Dsic\Lib\SimpleStateTransitioner\Service\SimpleStateTransitioner', create]
+    calls:
+      - [loadConfig, ['@peim.services.medida_transitions']]
+
+  peim.infrastructure.menu_visibility_checker:
+    class: Dsic\Peim\Infrastructure\HTTP\Custom\Service\MenuVisibilityChecker
+
+  peim.infrastructure.services.planification_period_configuration:
+    class: Dsic\Peim\Infrastructure\HTTP\Custom\Service\Configuration\PlanificationPeriodConfigurationService
+    arguments:
+      - '@peim.doctrine_repository.planification_period_configuration'

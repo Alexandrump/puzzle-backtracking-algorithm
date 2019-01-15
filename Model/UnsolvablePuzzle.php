@@ -6,7 +6,7 @@
  * Time: 17:05
  */
 
-namespace Model;
+namespace TalentedPanda\PuzzleProblem\Model;
 
 class UnsolvablePuzzle extends Puzzle
 {

@@ -4,7 +4,7 @@
  * Date: 9/01/19
  */
 
-namespace Model;
+namespace TalentedPanda\PuzzleProblem\Model;
 
 class Condition
 {

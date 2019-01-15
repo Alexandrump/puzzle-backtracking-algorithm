@@ -4,9 +4,9 @@
  * @date: 9/01/19
  */
 
-namespace Model;
+namespace TalentedPanda\PuzzleProblem\Model;
 
-use Model\Exception\NonValidPiecesBagException;
+use TalentedPanda\PuzzleProblem\Model\Exception\NonValidPiecesBagException;
 
 class PiecesBag
 {

@@ -4,11 +4,11 @@
  * @date: 8/01/19
  */
 
-namespace Application\Service;
+namespace TalentedPanda\PuzzleProblem\Service;
 
-use Model\PiecesBag;
-use Model\Puzzle;
-use Model\UnsolvablePuzzle;
+use TalentedPanda\PuzzleProblem\Model\PiecesBag;
+use TalentedPanda\PuzzleProblem\Model\Puzzle;
+use TalentedPanda\PuzzleProblem\Model\UnsolvablePuzzle;
 
 class PuzzleSolver
 {

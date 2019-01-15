@@ -4,7 +4,7 @@
  * @date: 9/01/19
  */
 
-namespace Model\Exception;
+namespace TalentedPanda\PuzzleProblem\Model\Exception;
 
 
 class NonValidPiecesBagException extends \Exception

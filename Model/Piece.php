@@ -4,9 +4,9 @@
  * @date: 8/01/19
  */
 
-namespace Model;
+namespace TalentedPanda\PuzzleProblem\Model;
 
-use Model\Exception\NonValidPieceException;
+use TalentedPanda\PuzzleProblem\Model\Exception\NonValidPieceException;
 
 class Piece
 {

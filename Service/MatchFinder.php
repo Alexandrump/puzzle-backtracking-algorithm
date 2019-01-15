@@ -6,12 +6,12 @@
  * Time: 13:18
  */
 
-namespace Application\Service;
+namespace TalentedPanda\PuzzleProblem\Service;
 
-use Model\Condition;
-use Model\Exception\NonExistentPieceException;
-use Model\Exception\NonValidPieceException;
-use Model\Piece;
+use TalentedPanda\PuzzleProblem\Model\Condition;
+use TalentedPanda\PuzzleProblem\Model\Exception\NonExistentPieceException;
+use TalentedPanda\PuzzleProblem\Model\Exception\NonValidPieceException;
+use TalentedPanda\PuzzleProblem\Model\Piece;
 
 class MatchFinder
 {
