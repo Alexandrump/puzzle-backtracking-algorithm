@@ -66,7 +66,7 @@ class PiecesBag
      */
     public function remove(Piece $piece): PiecesBag
     {
-        $this->remainingPieces = array_diff($this->remainingPieces, [$piece]);
+        unset($this->remainingPieces[$piece->getPosition()]);
 
         return $this;
     }
@@ -74,7 +74,6 @@ class PiecesBag
     /**
      * @param array $pieces
      * @param int $totalPieces
-     * @param bool $isFull
      * @return bool
      */
     private function initialStateNotStartable(array $pieces, int $totalPieces): bool
@@ -83,16 +82,20 @@ class PiecesBag
     }
 
     /**
-     * @param Piece[] $pieces
-     * @return array
+     * @param array $pieces
+     * @return Piece[]
      */
     private static function processPieces($pieces): array
     {
         return array_map(
-            function ($piece) {
-                return explode(" ", $piece);
+            function ($piece, $position) {
+                return new Piece(
+                    $position,
+                    explode(" ", $piece)
+                );
             },
-            $pieces);
+            $pieces,
+            (array_keys($pieces)));
     }
 
 }

@@ -12,30 +12,43 @@ use TalentedPanda\PuzzleProblem\Model\UnsolvablePuzzle;
 
 class PuzzleSolver
 {
+    /** @var MatchFinder */
+    private $matchFinder;
+
+    /**
+     * PuzzleSolver constructor.
+     * @param MatchFinder $matchFinder
+     */
+    public function __construct(MatchFinder $matchFinder)
+    {
+        $this->matchFinder = $matchFinder;
+    }
+
     /**
      * @param Puzzle $puzzle
      * @param PiecesBag $piecesBag
-     * @return Puzzle|UnsolvablePuzzle
+     * @return \Generator
      */
-    public function solve(Puzzle $puzzle, PiecesBag $piecesBag)
+    public function solve(Puzzle $puzzle, PiecesBag $piecesBag): \Generator
     {
         if (count($piecesBag->getRemainingPieces()) === 0 || $puzzle instanceof UnsolvablePuzzle) {
             return $puzzle;
         }
 
-        $candidates = (new MatchFinder())->findValidCandidates(
+        $candidates = $this->matchFinder->findValidCandidates(
             $piecesBag->getRemainingPieces(),
             $puzzle->getCurrentCondition()
         );
 
         foreach ($candidates as $piece) {
+            /** @var Puzzle $puzzle */
             $puzzle = $this->solve(
                 $puzzle->placePiece($piece),
                 $piecesBag->remove($piece)
             );
 
             if (!$puzzle instanceof UnsolvablePuzzle) {
-                yield $puzzle;
+                return $puzzle;
             }
         }
         return UnsolvablePuzzle::create();

@@ -13,9 +13,11 @@ class NonValidPieceException extends \Exception
 
     /**
      * NonValidPieceException constructor.
+     * @param string $message
      */
     public function __construct($message = 'The piece is not valid.')
     {
+        parent::__construct($message);
     }
 
 }

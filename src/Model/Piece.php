@@ -16,6 +16,7 @@ class Piece
 
     /** @var int */
     private $position;
+
     /** @var array */
     private $sides;
 
@@ -31,7 +32,11 @@ class Piece
             throw new NonValidPieceException();
         }
         $this->position = $position;
-        $this->sides = $sides;
+        $this->sides = array_map(
+            function ($side) {
+                return (int)$side;
+            },
+            $sides);
     }
 
     /**
@@ -57,12 +62,13 @@ class Piece
     public function rotate90Degrees(): Piece
     {
         $newUnorderedSides = $this->sides;
+        array_unshift(
+            $newUnorderedSides,
+            array_pop($newUnorderedSides)
+        );
         return new Piece(
             $this->position,
-            array_unshift(
-                $newUnorderedSides[0],
-                array_pop($newUnorderedSides)
-            )
+            $newUnorderedSides
         );
     }
 
@@ -129,10 +135,18 @@ class Piece
         $sideConditions = $condition->getSideConditions();
 
         return (
-            (empty($sideConditions['left']) || $sideConditions['left'] === $this->sides[0]) &&
-            (empty($sideConditions['top']) || $sideConditions['top'] === $this->sides[1]) &&
-            (empty($sideConditions['right']) || $sideConditions['right'] === $this->sides[2]) &&
-            (empty($sideConditions['bottom']) || $sideConditions['bottom'] === $this->sides[3])
+            ($sideConditions['left'] === $this->sides[0] || ($sideConditions['left'] === Condition::ANY_SIDE_TYPE && $this->sides[0] !== 0)) &&
+            ($sideConditions['top'] === $this->sides[1] || ($sideConditions['top'] === Condition::ANY_SIDE_TYPE && $this->sides[1] !== 0)) &&
+            ($sideConditions['right'] === $this->sides[2] || ($sideConditions['right'] === Condition::ANY_SIDE_TYPE && $this->sides[2] !== 0)) &&
+            ($sideConditions['bottom'] === $this->sides[3] || ($sideConditions['bottom'] === Condition::ANY_SIDE_TYPE && $this->sides[3] !== 0))
         );
+    }
+
+    /**
+     * @return int
+     */
+    public function getPosition(): int
+    {
+        return $this->position;
     }
 }

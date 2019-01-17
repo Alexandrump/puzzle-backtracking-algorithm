@@ -18,7 +18,8 @@ class ContainerLoader
     private static $instance = null;
 
     /**
-     * @return ContainerBuilder
+     * @return ContainerBuilder|null
+     * @throws \Exception
      */
     public static function instance()
     {
@@ -31,18 +32,16 @@ class ContainerLoader
 
     /**
      * @return ContainerBuilder
+     * @throws \Exception
      */
     private static function load()
     {
-
         $container = new ContainerBuilder();
 
-        $parameterLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../'));
+        $parameterLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
         $parameterLoader->load('parameters.yml');
 
-
-
-        $serviceLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../definitions/'));
+        $serviceLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config/definitions'));
         $serviceLoader->load('services.yml');
 
         return $container;

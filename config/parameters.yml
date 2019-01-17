@@ -1,1 +1,3 @@
-default_upload_path: '/var/html/www/puzzle/Uploads'
+# This file is auto-generated during the composer install
+parameters:
+    default_puzzle_path: /var/www/html/puzzle/resources/Puzzles

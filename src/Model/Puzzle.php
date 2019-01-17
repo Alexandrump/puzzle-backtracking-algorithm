@@ -103,8 +103,8 @@ class Puzzle
     {
         if ($piece->meets($this->getCurrentCondition())
         ) {
-            $puzzle = new Puzzle(
-                array_merge($this->getPieces(), $piece),
+            $puzzle = Puzzle::create(
+                array_merge($this->getPieces(), [$piece]),
                 $this->getBoard()
             );
 
@@ -119,7 +119,8 @@ class Puzzle
     private function recalculateCondition(): Condition
     {
         $placedPieces = $this->getPieces();
-        $nextPosition = count($placedPieces) + 1;
+
+        $nextPosition = count($placedPieces);
 
         if ($nextPosition == ($this->getBoard()->getWidth()) + 1) {
 
@@ -136,13 +137,39 @@ class Puzzle
             $topCondition = $placedPieces[$topPiecePosition]->getSides()[1];
         }
 
-        return new Condition(
-            [
-                'left' => $leftCondition,
-                'top' => $topCondition
-            ]
-        );
+        return Condition::create($leftCondition, $topCondition);
+    }
 
+    /**
+     * @param int $nextPosition
+     * @return bool
+     */
+    private function pieceBelongsToBorderLeft(int $nextPosition): bool
+    {
+        return ($nextPosition % $this->getBoard()->getWidth()) === 0;
+    }
+
+    /**
+     * @param int $nextPosition
+     * @return bool
+     */
+    private function pieceBelongsToBorderTop(int $nextPosition): bool
+    {
+        return (($nextPosition + 1) / $this->getBoard()->getWidth()) <= 1;
+    }
+
+    /**
+     * @param int $nextPosition
+     * @return bool
+     */
+    private function pieceBelongsToBorderRight(int $nextPosition): bool
+    {
+        return (($nextPosition + 1) % $this->getBoard()->getWidth()) === 0;
+    }
+
+    private function pieceBelongsToBorderBottom($nextPosition):bool
+    {
+        return (($nextPosition +1) / $this->getBoard()->getWidth()) === $this->getBoard()->getWidth();
     }
 
     /**
@@ -150,6 +177,10 @@ class Puzzle
      */
     public function __toString()
     {
+        foreach ($this->placedPieces as $piece) {
+            $piece;
+        }
+
         return '';
     }
 
