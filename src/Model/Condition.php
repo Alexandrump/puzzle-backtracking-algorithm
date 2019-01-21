@@ -30,9 +30,9 @@ class Condition
      * @return Condition
      */
     public static function create(
-        int $leftSideShape =  self::ANY_SIDE_TYPE,
-        int $topSideShape =  self::ANY_SIDE_TYPE,
-        int $rightSideShape =  self::ANY_SIDE_TYPE,
+        int $leftSideShape = self::ANY_SIDE_TYPE,
+        int $topSideShape = self::ANY_SIDE_TYPE,
+        int $rightSideShape = self::ANY_SIDE_TYPE,
         int $bottomSideShape = self::ANY_SIDE_TYPE
     ): Condition
     {

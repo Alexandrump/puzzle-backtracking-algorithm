@@ -16,7 +16,7 @@ try {
 
 //    $fileName = trim(fgets(STDIN));
 
-    $fileName = "4x4.txt";
+    $fileName = "2x2.txt";
 
     $input = (ContainerLoader::instance()->get(
         'talented_panda.puzzle_problem.service.input_handler'

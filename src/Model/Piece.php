@@ -41,6 +41,14 @@ class Piece
     }
 
     /**
+     * @return int
+     */
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    /**
      * @return bool
      */
     public function isCorner(): bool
@@ -125,39 +133,61 @@ class Piece
      * @param Condition $condition
      * @return bool
      */
-    public function meets(Condition $condition)
+    public function meets(Condition $condition): bool
     {
-        $sideConditions = $condition->getSideConditions();
-
         return (
-            $this->meetsLeftCondition() && $this->meetsTopCondition() && $this->meetsRightCondition() && $this->meetsBottomCondition());
-    }
-
-    private function meetsLeftCondition()
-    {
-        return ($sideConditions['left'] === $this->sides[0] || ($sideConditions['left'] === Condition::ANY_SIDE_TYPE && $this->sides[0] !== 0));
-    }
-
-    private function meetsTopCondition()
-    {
-        return ($sideConditions['top'] === $this->sides[1] || ($sideConditions['top'] === Condition::ANY_SIDE_TYPE && $this->sides[1] !== 0));
-    }
-
-    private function meetsRightCondition()
-    {
-        return ($sideConditions['right'] === $this->sides[2] || ($sideConditions['right'] === Condition::ANY_SIDE_TYPE && $this->sides[2] !== 0));
-    }
-
-    private function meetsBottomCondition()
-    {
-        return ($sideConditions['bottom'] === $this->sides[3] || ($sideConditions['bottom'] === Condition::ANY_SIDE_TYPE && $this->sides[3] !== 0));
+            $this->meetsLeftCondition($condition->getSideConditions()) &&
+            $this->meetsTopCondition($condition->getSideConditions()) &&
+            $this->meetsRightCondition($condition->getSideConditions()) &&
+            $this->meetsBottomCondition($condition->getSideConditions()));
     }
 
     /**
-     * @return int
+     * @param array $sideConditions
+     * @return bool
      */
-    public function getPosition(): int
+    private function meetsLeftCondition(array $sideConditions): bool
     {
-        return $this->position;
+        return (
+            $sideConditions['left'] === $this->sides[0] ||
+            ($sideConditions['left'] === Condition::ANY_SIDE_TYPE && $this->sides[0] !== 0)
+        );
     }
+
+    /**
+     * @param array $sideConditions
+     * @return bool
+     */
+    private function meetsTopCondition(array $sideConditions): bool
+    {
+        return (
+            $sideConditions['top'] === $this->sides[1] ||
+            ($sideConditions['top'] === Condition::ANY_SIDE_TYPE && $this->sides[1] !== 0)
+        );
+    }
+
+    /**
+     * @param array $sideConditions
+     * @return bool
+     */
+    private function meetsRightCondition(array $sideConditions): bool
+    {
+        return (
+            $sideConditions['right'] === $this->sides[2] ||
+            ($sideConditions['right'] === Condition::ANY_SIDE_TYPE && $this->sides[2] !== 0)
+        );
+    }
+
+    /**
+     * @param array $sideConditions
+     * @return bool
+     */
+    private function meetsBottomCondition(array $sideConditions): bool
+    {
+        return (
+            $sideConditions['bottom'] === $this->sides[3] ||
+            ($sideConditions['bottom'] === Condition::ANY_SIDE_TYPE && $this->sides[3] !== 0)
+        );
+    }
+
 }

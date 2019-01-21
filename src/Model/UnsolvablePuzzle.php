@@ -21,10 +21,19 @@ class UnsolvablePuzzle extends Puzzle
     }
 
     /**
+     * @param Board $board
      * @return UnsolvablePuzzle
      */
-    public static function create()
+    public static function createEmpty(Board $board)
     {
-        return new static([], new Board('0 0'));
+        return new static([], $board);
     }
+
+//    /**
+//     * @return Condition
+//     */
+//    public function getCurrentCondition(): Condition
+//    {
+//        return Condition::create(Piece::OUTER_SIDE_PART, Piece::OUTER_SIDE_PART, Piece::OUTER_SIDE_PART, Piece::OUTER_SIDE_PART);
+//    }
 }

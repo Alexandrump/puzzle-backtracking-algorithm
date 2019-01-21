@@ -32,6 +32,7 @@ class PuzzleSolver
     public function solve(Puzzle $puzzle, PiecesBag $piecesBag): Puzzle
     {
         if (count($piecesBag->getRemainingPieces()) === 0 || $puzzle instanceof UnsolvablePuzzle) {
+            echo "Final iteration done!.\n\n";
             return $puzzle;
         }
 
@@ -42,16 +43,17 @@ class PuzzleSolver
 
         foreach ($candidates as $piece) {
             /** @var Puzzle $puzzle */
-            $puzzle = $this->solve(
+            $puzzleAttempt = $this->solve(
                 $puzzle->placePiece($piece),
                 $piecesBag->remove($piece)
             );
 
-            if (!$puzzle instanceof UnsolvablePuzzle) {
-                return $puzzle;
+            if (!$puzzleAttempt instanceof UnsolvablePuzzle) {
+                return $puzzleAttempt;
             }
         }
-        return UnsolvablePuzzle::create();
+        echo "Partial iteration done!.\n";
+        return UnsolvablePuzzle::createEmpty($puzzle->getBoard());
     }
 
 }

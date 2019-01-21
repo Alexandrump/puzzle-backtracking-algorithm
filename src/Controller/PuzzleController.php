@@ -9,6 +9,7 @@
 namespace TalentedPanda\PuzzleProblem\Controller;
 
 use TalentedPanda\PuzzleProblem\Model\Condition;
+use TalentedPanda\PuzzleProblem\Model\Piece;
 use TalentedPanda\PuzzleProblem\Model\Puzzle;
 use TalentedPanda\PuzzleProblem\Model\PuzzleInputDTO;
 use TalentedPanda\PuzzleProblem\Service\MatchFinder;
@@ -51,10 +52,12 @@ class PuzzleController
         $puzzle = Puzzle::createFromCorner(
             $firstPiece,
             $input->getBoard(),
-            Condition::createDefaultInitial()
+            Condition::create($firstPiece->getSides()[3], Piece::OUTER_SIDE_PART)
         );
 
         $solution = $this->puzzleSolver->solve($puzzle, $piecesBag);
+
+        echo $solution; exit;
 
         /** @var Puzzle $puzzleSolution */
         foreach ($this->puzzleSolver->solve($puzzle, $input->getPiecesBag()) as $puzzleSolution) {

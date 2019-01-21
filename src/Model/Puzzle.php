@@ -109,7 +109,7 @@ class Puzzle
 
             return $puzzle;
         }
-        return UnsolvablePuzzle::createEmpty();
+        return UnsolvablePuzzle::createEmpty($this->getBoard());
     }
 
     /**
@@ -120,12 +120,12 @@ class Puzzle
         $placedPieces = $this->getPieces();
 
         $nextPosition = count($placedPieces);
-        $leftPosition = $nextPosition - 1;
+        $previousPosition = $nextPosition - 1;
         $topPosition = $nextPosition - $this->getBoard()->getWidth();
 
-        $rightCondition = $this->pieceBelongsToBorderLeft($nextPosition) ? 0 : $placedPieces[$leftPosition]->getSides()[0];
-        $topCondition = $this->pieceBelongsToBorderTop($nextPosition) ? 0 : $placedPieces[$topPosition]->getSides()[1];
-        $leftCondition = $this->pieceBelongsToBorderRight($nextPosition) ? 0 : -1;
+        $leftCondition = $this->pieceBelongsToBorderLeft($nextPosition) ? 0 : $placedPieces[$previousPosition]->getSides()[2];
+        $topCondition = $this->pieceBelongsToBorderTop($nextPosition) ? 0 : $placedPieces[$topPosition]->getSides()[3];
+        $rightCondition = $this->pieceBelongsToBorderRight($nextPosition) ? 0 : -1;
         $bottomCondition = $this->pieceBelongsToBorderBottom($nextPosition) ? 0 : -1;
 
         $this->setCurrentCondition(Condition::create($leftCondition, $topCondition, $rightCondition, $bottomCondition));
@@ -180,14 +180,14 @@ class Puzzle
     /**
      * @return string
      */
-    public
-    function __toString()
+    public function __toString()
     {
+        $puzzle = '';
         foreach ($this->placedPieces as $piece) {
-            $piece;
+            $puzzle .= ($piece->getPosition() + 1) . ' ';
         }
 
-        return '';
+        return $puzzle;
     }
 
 }
