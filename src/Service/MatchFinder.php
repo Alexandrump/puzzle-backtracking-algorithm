@@ -24,9 +24,15 @@ class MatchFinder
     {
         foreach ($remainingPieces as $piece) {
             for ($rotation = 0; $rotation < Piece::PIECE_SIDES; $rotation++) {
-                $rotatedPiece = $piece->rotate90Degrees();
+                if ($rotation !== 0) {
+                    $rotatedPiece = $piece->rotate90Degrees();
+                } else {
+                    $rotatedPiece = $piece;
+                }
                 if ($condition->check($rotatedPiece)) {
                     yield $rotatedPiece;
+                } else {
+                    $piece = $rotatedPiece;
                 }
             }
         }

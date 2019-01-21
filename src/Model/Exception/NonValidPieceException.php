@@ -20,4 +20,13 @@ class NonValidPieceException extends \Exception
         parent::__construct($message);
     }
 
+    /**
+     * @param int $piecePosition
+     * @return NonValidPieceException
+     */
+    public static function createWithLocated($piecePosition): NonValidPieceException
+    {
+        return new static("The piece number $piecePosition in the Piece Bag is not valid.");
+    }
+
 }

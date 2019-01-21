@@ -39,11 +39,8 @@ class Condition
         $sideCondition = [];
 
         $sideCondition['left'] = $leftSideShape;
-
         $sideCondition['top'] = $topSideShape;
-
         $sideCondition['right'] = $rightSideShape;
-
         $sideCondition['bottom'] = $bottomSideShape;
 
         return new static($sideCondition);

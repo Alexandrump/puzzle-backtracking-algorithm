@@ -66,9 +66,11 @@ class PiecesBag
      */
     public function remove(Piece $piece): PiecesBag
     {
-        unset($this->remainingPieces[$piece->getPosition()]);
+        $remainningPieces = $this->remainingPieces;
 
-        return $this;
+        unset($remainningPieces[$piece->getPosition()]);
+
+        return new static($remainningPieces);
     }
 
     /**

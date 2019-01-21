@@ -21,7 +21,6 @@ class Puzzle
      * Puzzle constructor.
      * @param array $placedPieces
      * @param Board $board
-     * @param Condition|null $initialCondition
      */
     public function __construct(
         array $placedPieces,
@@ -110,50 +109,44 @@ class Puzzle
 
             return $puzzle;
         }
-        return UnsolvablePuzzle::create();
+        return UnsolvablePuzzle::createEmpty();
     }
 
     /**
-     * @return Condition
+     *
      */
-    private function recalculateCondition(): Condition
+    private function recalculateCondition(): void
     {
         $placedPieces = $this->getPieces();
 
         $nextPosition = count($placedPieces);
+        $leftPosition = $nextPosition - 1;
+        $topPosition = $nextPosition - $this->getBoard()->getWidth();
 
-        if ($nextPosition == ($this->getBoard()->getWidth()) + 1) {
+        $rightCondition = $this->pieceBelongsToBorderLeft($nextPosition) ? 0 : $placedPieces[$leftPosition]->getSides()[0];
+        $topCondition = $this->pieceBelongsToBorderTop($nextPosition) ? 0 : $placedPieces[$topPosition]->getSides()[1];
+        $leftCondition = $this->pieceBelongsToBorderRight($nextPosition) ? 0 : -1;
+        $bottomCondition = $this->pieceBelongsToBorderBottom($nextPosition) ? 0 : -1;
 
-            $topPiecePosition = $nextPosition - $this->getBoard()->getWidth();
-
-            $leftCondition = 0;
-            $topCondition = $placedPieces[$topPiecePosition]->getSides()[1];
-
-        } else {
-            $leftPiecePosition = $nextPosition - 1;
-            $topPiecePosition = $nextPosition - $this->getBoard()->getWidth();
-
-            $leftCondition = $placedPieces[$leftPiecePosition]->getSides()[0];
-            $topCondition = $placedPieces[$topPiecePosition]->getSides()[1];
-        }
-
-        return Condition::create($leftCondition, $topCondition);
+        $this->setCurrentCondition(Condition::create($leftCondition, $topCondition, $rightCondition, $bottomCondition));
     }
 
     /**
      * @param int $nextPosition
      * @return bool
      */
-    private function pieceBelongsToBorderLeft(int $nextPosition): bool
+    private
+    function pieceBelongsToBorderLeft(int $nextPosition): bool
     {
-        return ($nextPosition % $this->getBoard()->getWidth()) === 0;
+        return (($nextPosition + 1) % $this->getBoard()->getWidth()) === 1;
     }
 
     /**
      * @param int $nextPosition
      * @return bool
      */
-    private function pieceBelongsToBorderTop(int $nextPosition): bool
+    private
+    function pieceBelongsToBorderTop(int $nextPosition): bool
     {
         return (($nextPosition + 1) / $this->getBoard()->getWidth()) <= 1;
     }
@@ -162,20 +155,33 @@ class Puzzle
      * @param int $nextPosition
      * @return bool
      */
-    private function pieceBelongsToBorderRight(int $nextPosition): bool
+    private
+    function pieceBelongsToBorderRight(int $nextPosition): bool
     {
         return (($nextPosition + 1) % $this->getBoard()->getWidth()) === 0;
     }
 
-    private function pieceBelongsToBorderBottom($nextPosition):bool
+    /**
+     * @param int $nextPosition
+     * @return bool
+     */
+    private
+    function pieceBelongsToBorderBottom(int $nextPosition): bool
     {
-        return (($nextPosition +1) / $this->getBoard()->getWidth()) === $this->getBoard()->getWidth();
+        return in_array(
+            $nextPosition,
+            range(
+                ($this->getBoard()->getTotalNumberOfPieces()) - ($this->getBoard()->getWidth()),
+                ($this->getBoard()->getTotalNumberOfPieces())
+            )
+        );
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public
+    function __toString()
     {
         foreach ($this->placedPieces as $piece) {
             $piece;

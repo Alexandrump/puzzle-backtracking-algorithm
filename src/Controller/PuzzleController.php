@@ -44,6 +44,7 @@ class PuzzleController
             $input->getPiecesBag()->getRemainingPieces(),
             Condition::createDefaultInitial()
         );
+        $piecesBag = $input->getPiecesBag()->remove($firstPiece);
 
         print_r("Solving the puzzle...please be patient. \n");
 
@@ -53,7 +54,7 @@ class PuzzleController
             Condition::createDefaultInitial()
         );
 
-        $solution = $this->puzzleSolver->solve($puzzle, $input->getPiecesBag());
+        $solution = $this->puzzleSolver->solve($puzzle, $piecesBag);
 
         /** @var Puzzle $puzzleSolution */
         foreach ($this->puzzleSolver->solve($puzzle, $input->getPiecesBag()) as $puzzleSolution) {

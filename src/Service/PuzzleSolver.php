@@ -29,7 +29,7 @@ class PuzzleSolver
      * @param PiecesBag $piecesBag
      * @return \Generator
      */
-    public function solve(Puzzle $puzzle, PiecesBag $piecesBag): \Generator
+    public function solve(Puzzle $puzzle, PiecesBag $piecesBag): Puzzle
     {
         if (count($piecesBag->getRemainingPieces()) === 0 || $puzzle instanceof UnsolvablePuzzle) {
             return $puzzle;

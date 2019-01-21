@@ -29,8 +29,9 @@ class Piece
     public function __construct(int $position, array $sides)
     {
         if (!$this->isValid($sides)) {
-            throw new NonValidPieceException();
+            throw NonValidPieceException::create($position);
         }
+
         $this->position = $position;
         $this->sides = array_map(
             function ($side) {
@@ -109,13 +110,7 @@ class Piece
      */
     private function calculateOuterSides($sides): int
     {
-        return array_reduce(
-            $sides,
-            function ($occurrences, $side) {
-                return ($side === self::OUTER_SIDE_PART) ? $occurrences++ : $occurrences;
-            },
-            0
-        );
+        return count(array_keys($sides, self::OUTER_SIDE_PART));
     }
 
     /**
@@ -135,11 +130,27 @@ class Piece
         $sideConditions = $condition->getSideConditions();
 
         return (
-            ($sideConditions['left'] === $this->sides[0] || ($sideConditions['left'] === Condition::ANY_SIDE_TYPE && $this->sides[0] !== 0)) &&
-            ($sideConditions['top'] === $this->sides[1] || ($sideConditions['top'] === Condition::ANY_SIDE_TYPE && $this->sides[1] !== 0)) &&
-            ($sideConditions['right'] === $this->sides[2] || ($sideConditions['right'] === Condition::ANY_SIDE_TYPE && $this->sides[2] !== 0)) &&
-            ($sideConditions['bottom'] === $this->sides[3] || ($sideConditions['bottom'] === Condition::ANY_SIDE_TYPE && $this->sides[3] !== 0))
-        );
+            $this->meetsLeftCondition() && $this->meetsTopCondition() && $this->meetsRightCondition() && $this->meetsBottomCondition());
+    }
+
+    private function meetsLeftCondition()
+    {
+        return ($sideConditions['left'] === $this->sides[0] || ($sideConditions['left'] === Condition::ANY_SIDE_TYPE && $this->sides[0] !== 0));
+    }
+
+    private function meetsTopCondition()
+    {
+        return ($sideConditions['top'] === $this->sides[1] || ($sideConditions['top'] === Condition::ANY_SIDE_TYPE && $this->sides[1] !== 0));
+    }
+
+    private function meetsRightCondition()
+    {
+        return ($sideConditions['right'] === $this->sides[2] || ($sideConditions['right'] === Condition::ANY_SIDE_TYPE && $this->sides[2] !== 0));
+    }
+
+    private function meetsBottomCondition()
+    {
+        return ($sideConditions['bottom'] === $this->sides[3] || ($sideConditions['bottom'] === Condition::ANY_SIDE_TYPE && $this->sides[3] !== 0));
     }
 
     /**
