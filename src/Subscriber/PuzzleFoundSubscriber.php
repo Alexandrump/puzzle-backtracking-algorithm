@@ -5,6 +5,7 @@
 
 namespace TalentedPanda\PuzzleProblem\Subscriber\PuzzleFoundSubscriber;
 
+use TalentedPanda\PuzzleProblem\Event\PuzzleFound;
 use TalentedPanda\PuzzleProblem\Lib\EventHelper\EventSubscriberInterface;
 
 /**

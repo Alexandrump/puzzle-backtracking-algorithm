@@ -14,7 +14,7 @@ try {
     printf("Please, write the name of the file to solve the puzzle:");
 
 //    $fileName = trim(fgets(STDIN));
-    $fileName = '8x8.txt';
+    $fileName = '4x4.txt';
 
     $input = (ContainerLoader::instance()->get(
         'talented_panda.puzzle_problem.service.input_handler'

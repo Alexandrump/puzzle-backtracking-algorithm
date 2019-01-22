@@ -13,6 +13,7 @@ use TalentedPanda\PuzzleProblem\Lib\EventHelper\EventSubscriberInterface;
  */
 class EventPublisher
 {
+
     /**
      * @var EventSubscriberInterface[]
      */
@@ -124,4 +125,5 @@ class EventPublisher
     {
         return $this->subscribers;
     }
+
 }

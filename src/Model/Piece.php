@@ -189,4 +189,12 @@ class Piece
             ($sideConditions['bottom'] === Condition::ANY_SIDE_TYPE && $this->sides[3] !== 0)
         );
     }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return json_encode($this->sides);
+    }
 }
