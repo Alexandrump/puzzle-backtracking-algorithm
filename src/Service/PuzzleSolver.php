@@ -51,8 +51,11 @@ class PuzzleSolver
             if (!$puzzleAttempt instanceof UnsolvablePuzzle) {
                 return $puzzleAttempt;
             }
+
         }
-        echo "Partial iteration done!.\n";
+
+        echo "Partial iteration done! Using:" . round((memory_get_usage() / 1048576), 2) . " MB \n";
+        echo "-- Pieces Inside the Bag: ". count($piecesBag->getRemainingPieces()).'. Placed Pieces: '.$puzzle->totalPlacedPieces()."\n";
         return UnsolvablePuzzle::createEmpty($puzzle->getBoard());
     }
 

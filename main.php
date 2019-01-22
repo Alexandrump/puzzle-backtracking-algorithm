@@ -13,21 +13,19 @@ try {
     printf("Welcome to the Puzzle Solver Application, made using blacktrack algorithm. \n");
     printf("Please, write the name of the file to solve the puzzle:");
 
-
 //    $fileName = trim(fgets(STDIN));
-
-    $fileName = "2x2.txt";
+    $fileName = '8x8.txt';
 
     $input = (ContainerLoader::instance()->get(
         'talented_panda.puzzle_problem.service.input_handler'
     )->handle($fileName));
 
-    ob_start();
-    ob_clean();
+//    ob_start();
+//    ob_clean();
     $response = ContainerLoader::instance()->get(
         'talented_panda.puzzle_problem.controller.puzzle'
     )->solvePuzzleFromInputAction($input);
-    ob_flush();
+//    ob_flush();
 
 } catch (NonValidFilePathException $nonValidFilePathException) {
     printf($nonValidFilePathException->getMessage());

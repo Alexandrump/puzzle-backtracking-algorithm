@@ -45,19 +45,25 @@ class PuzzleController
             $input->getPiecesBag()->getRemainingPieces(),
             Condition::createDefaultInitial()
         );
+
         $piecesBag = $input->getPiecesBag()->remove($firstPiece);
 
         print_r("Solving the puzzle...please be patient. \n");
 
+        $initialCondition = $input->getBoard()->getWidth() !== 2 ?
+            Condition::create($firstPiece->getSides()[2], Piece::OUTER_SIDE_PART) :
+            Condition::create($firstPiece->getSides()[2], Piece::OUTER_SIDE_PART, Piece::OUTER_SIDE_PART);
+
         $puzzle = Puzzle::createFromCorner(
             $firstPiece,
             $input->getBoard(),
-            Condition::create($firstPiece->getSides()[3], Piece::OUTER_SIDE_PART)
+            $initialCondition
         );
 
         $solution = $this->puzzleSolver->solve($puzzle, $piecesBag);
 
-        echo $solution; exit;
+        echo $solution;
+        exit;
 
         /** @var Puzzle $puzzleSolution */
         foreach ($this->puzzleSolver->solve($puzzle, $input->getPiecesBag()) as $puzzleSolution) {

@@ -27,3 +27,6 @@ services:
     class: TalentedPanda\PuzzleProblem\Service\PuzzleSolver
     arguments:
       - '@talented_panda.puzzle_problem.service.match_finder'
+
+  talented_panda.puzzle_problem.event.puzzle_found_subscriber:
+    class: TalentedPanda\PuzzleProblem\Subscriber\PuzzleFoundSubscriber\PuzzleFoundSubscriber

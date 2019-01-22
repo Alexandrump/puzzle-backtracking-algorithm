@@ -189,5 +189,4 @@ class Piece
             ($sideConditions['bottom'] === Condition::ANY_SIDE_TYPE && $this->sides[3] !== 0)
         );
     }
-
 }

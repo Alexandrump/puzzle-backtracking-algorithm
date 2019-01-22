@@ -135,8 +135,7 @@ class Puzzle
      * @param int $nextPosition
      * @return bool
      */
-    private
-    function pieceBelongsToBorderLeft(int $nextPosition): bool
+    private function pieceBelongsToBorderLeft(int $nextPosition): bool
     {
         return (($nextPosition + 1) % $this->getBoard()->getWidth()) === 1;
     }
@@ -145,8 +144,7 @@ class Puzzle
      * @param int $nextPosition
      * @return bool
      */
-    private
-    function pieceBelongsToBorderTop(int $nextPosition): bool
+    private function pieceBelongsToBorderTop(int $nextPosition): bool
     {
         return (($nextPosition + 1) / $this->getBoard()->getWidth()) <= 1;
     }
@@ -155,8 +153,7 @@ class Puzzle
      * @param int $nextPosition
      * @return bool
      */
-    private
-    function pieceBelongsToBorderRight(int $nextPosition): bool
+    private function pieceBelongsToBorderRight(int $nextPosition): bool
     {
         return (($nextPosition + 1) % $this->getBoard()->getWidth()) === 0;
     }
@@ -165,8 +162,7 @@ class Puzzle
      * @param int $nextPosition
      * @return bool
      */
-    private
-    function pieceBelongsToBorderBottom(int $nextPosition): bool
+    private function pieceBelongsToBorderBottom(int $nextPosition): bool
     {
         return in_array(
             $nextPosition,
@@ -188,6 +184,14 @@ class Puzzle
         }
 
         return $puzzle;
+    }
+
+    /**
+     * @return int
+     */
+    public function totalPlacedPieces(): int
+    {
+        return count($this->placedPieces);
     }
 
 }
