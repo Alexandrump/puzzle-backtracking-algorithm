@@ -11,10 +11,10 @@ use TalentedPanda\PuzzleProblem\Model\Exception\NonValidPiecesBagException;
 
 try {
     printf("Welcome to the Puzzle Solver Application, made using blacktrack algorithm. \n");
-    printf("Please, write the name of the file to solve the puzzle:");
+    printf("Please, write the name of the file to solve the puzzle (without extension):");
 
 //    $fileName = trim(fgets(STDIN));
-    $fileName = '4x4.txt';
+    $fileName = '5x5';
 
     $input = (ContainerLoader::instance()->get(
         'talented_panda.puzzle_problem.service.input_handler'

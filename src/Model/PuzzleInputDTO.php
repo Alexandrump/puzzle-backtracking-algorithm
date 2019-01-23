@@ -11,6 +11,9 @@ namespace TalentedPanda\PuzzleProblem\Model;
 
 class PuzzleInputDTO
 {
+    /** @var string */
+    private $fileName;
+
     /** @var Board */
     private $board;
 
@@ -19,23 +22,34 @@ class PuzzleInputDTO
 
     /**
      * PuzzleInputDTO constructor.
+     * @param string $fileName
      * @param Board $board
      * @param PiecesBag $piecesBag
      */
-    private function __construct(Board $board, PiecesBag $piecesBag)
+    private function __construct(string $fileName, Board $board, PiecesBag $piecesBag)
     {
+        $this->fileName = $fileName;
         $this->board = $board;
         $this->piecesBag = $piecesBag;
     }
 
     /**
+     * @param string $fileName
      * @param Board $board
      * @param PiecesBag $piecesBag
      * @return PuzzleInputDTO
      */
-    public static function create(Board $board, PiecesBag $piecesBag): PuzzleInputDTO
+    public static function create(string $fileName, Board $board, PiecesBag $piecesBag): PuzzleInputDTO
     {
-        return new static($board, $piecesBag);
+        return new static($fileName, $board, $piecesBag);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileName(): string
+    {
+        return $this->fileName;
     }
 
     /**

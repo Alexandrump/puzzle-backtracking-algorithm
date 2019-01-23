@@ -1,2 +1,3 @@
 parameters:
   default_puzzle_path: '/var/www/html/puzzle/resources/Puzzles'
+  default_public_path: '/var/www/html/puzzle/public/'

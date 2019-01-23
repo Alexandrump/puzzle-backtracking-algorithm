@@ -1,3 +1,4 @@
 # This file is auto-generated during the composer install
 parameters:
     default_puzzle_path: /var/www/html/puzzle/resources/Puzzles
+    default_public_path: /var/www/html/puzzle/public

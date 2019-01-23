@@ -32,10 +32,11 @@ class InputHandler
      */
     public function handle(string $fileName): PuzzleInputDTO
     {
-        $fileContent = $this->fileManager->read($fileName);
+        $fileContent = $this->fileManager->readFromPuzzles($fileName);
         $board = $this->buildBoard($fileContent);
 
         return PuzzleInputDTO::create(
+            $fileName,
             $board,
             $this->buildPiecesBag($fileContent, $board->getTotalNumberOfPieces())
         );

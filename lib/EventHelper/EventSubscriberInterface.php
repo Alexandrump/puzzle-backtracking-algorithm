@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * @author: Alejandro Martínez Peregrina
  */
 
 namespace TalentedPanda\PuzzleProblem\Lib\EventHelper;

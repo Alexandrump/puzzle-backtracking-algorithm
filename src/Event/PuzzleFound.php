@@ -8,9 +8,10 @@
 
 namespace TalentedPanda\PuzzleProblem\Event;
 
+use TalentedPanda\PuzzleProblem\Lib\EventHelper\Event;
 use TalentedPanda\PuzzleProblem\Model\Puzzle;
 
-class PuzzleFound
+class PuzzleFound implements Event
 {
     /** @var \DateTimeImmutable */
     private $occuredOn;

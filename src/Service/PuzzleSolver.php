@@ -6,12 +6,14 @@
 
 namespace TalentedPanda\PuzzleProblem\Service;
 
+use TalentedPanda\PuzzleProblem\Event\PuzzleFound;
 use TalentedPanda\PuzzleProblem\Model\PiecesBag;
 use TalentedPanda\PuzzleProblem\Model\Puzzle;
 use TalentedPanda\PuzzleProblem\Model\UnsolvablePuzzle;
 
 class PuzzleSolver
 {
+    use EventPublishingTrait;
     /** @var MatchFinder */
     private $matchFinder;
 
@@ -27,13 +29,11 @@ class PuzzleSolver
     /**
      * @param Puzzle $puzzle
      * @param PiecesBag $piecesBag
-     * @return \Generator
+     * @return Puzzle
+     * @throws \Exception
      */
-    public function solve(Puzzle $puzzle, PiecesBag $piecesBag, $iteration = 0): Puzzle
+    public function solve(Puzzle $puzzle, PiecesBag $piecesBag): Puzzle
     {
-        $iteration++;
-
-
         if (count($piecesBag->getRemainingPieces()) === 0 || $puzzle instanceof UnsolvablePuzzle) {
             echo "Final iteration done!.\n\n";
             return $puzzle;
@@ -44,28 +44,24 @@ class PuzzleSolver
             $puzzle->getCurrentCondition()
         );
 
-
-        foreach ($candidates as $k => $piece) {
-            file_put_contents('/var/www/html/puzzle/results.txt', $puzzle->placePiece($piece) . "--- ($piece) ----- Candidates:" . $k . "\n\n", FILE_APPEND);
+        foreach ($candidates as $piece) {
             /** @var Puzzle $puzzle */
             $puzzleAttempt = $this->solve(
                 $puzzle->placePiece($piece),
-                $piecesBag->remove($piece),
-                $iteration + 1
+                $piecesBag->remove($piece)
             );
 
             if (!$puzzleAttempt instanceof UnsolvablePuzzle) {
-                return $puzzleAttempt;
+                $this->publishEvent(
+                    new PuzzleFound($puzzleAttempt)
+                );
+//                return $puzzleAttempt;
             }
 
         }
 
         echo "Partial iteration done! Using:" . round((memory_get_usage() / 1048576), 2) . " MB \n";
-
         echo "-- Pieces Inside the Bag: " . count($piecesBag->getRemainingPieces()) . '. Placed Pieces: ' . $puzzle->totalPlacedPieces() . "\n";
-
-        echo "Iteration: $iteration \n Piece";
-
         return UnsolvablePuzzle::createEmpty($puzzle->getBoard());
     }
 }
