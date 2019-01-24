@@ -5,8 +5,8 @@
 
 namespace TalentedPanda\PuzzleProblem\Service;
 
-use TalentedPanda\PuzzleProblem\EventHelper\EventPublisher;
-use TalentedPanda\PuzzleProblem\Lib\EventHelper\Event;
+use TalentedPanda\PuzzleProblem\Service\EventHelper\Event;
+use TalentedPanda\PuzzleProblem\Service\EventHelper\EventPublisher;
 
 /**
  * Trait EventPublishingTrait

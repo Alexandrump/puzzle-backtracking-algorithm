@@ -3,10 +3,7 @@
  * @author: Alejandro Martínez Peregrina
  */
 
-namespace TalentedPanda\PuzzleProblem\EventHelper;
-
-use TalentedPanda\PuzzleProblem\Lib\EventHelper\Event;
-use TalentedPanda\PuzzleProblem\Lib\EventHelper\EventSubscriberInterface;
+namespace TalentedPanda\PuzzleProblem\Service\EventHelper;
 
 /**
  * Class EventPublisher

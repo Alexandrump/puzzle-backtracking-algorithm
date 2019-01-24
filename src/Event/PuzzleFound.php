@@ -8,7 +8,7 @@
 
 namespace TalentedPanda\PuzzleProblem\Event;
 
-use TalentedPanda\PuzzleProblem\Lib\EventHelper\Event;
+use TalentedPanda\PuzzleProblem\Service\EventHelper\Event;
 use TalentedPanda\PuzzleProblem\Model\Puzzle;
 
 class PuzzleFound implements Event

@@ -32,6 +32,9 @@ class PuzzleSolutionHandler
 
     /**
      * @param PuzzleSolutionCommand $puzzleSolutionCommand
+     *
+     * @return string
+     *
      * @throws \Exception
      */
     public function handle(PuzzleSolutionCommand $puzzleSolutionCommand)
@@ -43,5 +46,7 @@ class PuzzleSolutionHandler
         );
 
         $this->puzzleSolver->solve($puzzle, $puzzleSolutionCommand->getPiecesBag());
+
+        return $puzzle->getPuzzleName();
     }
 }

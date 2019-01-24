@@ -6,12 +6,14 @@
 require __DIR__ . '/init.php';
 
 use TalentedPanda\PuzzleProblem\DependencyInjection\ContainerLoader;
+use TalentedPanda\PuzzleProblem\Model\Exception\NonExistentPieceException;
 use TalentedPanda\PuzzleProblem\Model\Exception\NonValidFilePathException;
+use TalentedPanda\PuzzleProblem\Model\Exception\NonValidPieceException;
 use TalentedPanda\PuzzleProblem\Model\Exception\NonValidPiecesBagException;
 
 try {
     printf("Welcome to the Puzzle Solver Application, made using blacktrack algorithm. \n");
-    printf("Please, write the name of the file to solve the puzzle (without extension):");
+    printf("Please, write the name of the file to solve the puzzle (without extension, i.e: '5x5'):");
 
 //    $fileName = trim(fgets(STDIN));
     $fileName = '5x5';
@@ -32,6 +34,12 @@ try {
     exit;
 } catch (NonValidPiecesBagException $nonValidPiecesBagException) {
     print_r($nonValidPiecesBagException->getMessage() . "\n");
+    exit;
+} catch (NonExistentPieceException $nonExistentPieceException) {
+    print_r($nonExistentPieceException->getMessage() . "\n");
+    exit;
+} catch (NonValidPieceException $nonValidPieceException) {
+    print_r($nonValidPieceException->getMessage() . "\n");
     exit;
 } catch (Exception $exception) {
     echo get_class($exception) . ':  ' . $exception->getMessage();

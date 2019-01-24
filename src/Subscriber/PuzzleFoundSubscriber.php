@@ -6,7 +6,7 @@
 namespace TalentedPanda\PuzzleProblem\Subscriber\PuzzleFoundSubscriber;
 
 use TalentedPanda\PuzzleProblem\Event\PuzzleFound;
-use TalentedPanda\PuzzleProblem\Lib\EventHelper\EventSubscriberInterface;
+use TalentedPanda\PuzzleProblem\Service\EventHelper\EventSubscriberInterface;
 use TalentedPanda\PuzzleProblem\Service\FileManager;
 
 /**
@@ -38,18 +38,15 @@ class PuzzleFoundSubscriber implements EventSubscriberInterface
 
     /**
      * @param PuzzleFound $event
-     *
-     * @throws \TalentedPanda\PuzzleProblem\Model\Exception\NonValidFilePathException
      */
     public function handle($event)
     {
-        $fileName = $event->getPuzzle()->namePuzzleFromDimension() . '_' . $event->getPuzzle()->getNameIdentifier();
-
-
-
-        if (!$this->fileManager->existWithData($fileName)) {
-            $this->fileManager->writeAttaching();
+        if (empty($this->fileManager->getDocumentPath())) {
+            $this->fileManager->setDocumentPath($event->getPuzzle()->getPuzzleName());
         }
-        $this->fileManager->readFromPublic('Solutions', '');
+
+        $solution = "Solution found at " . $event->occuredOn()->format('H:i:s') . ": \n" . $event->getPuzzle() . "\n\n";
+
+        $this->fileManager->writeAttachingToPublic($solution);
     }
 }

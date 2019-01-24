@@ -12,43 +12,37 @@ use TalentedPanda\PuzzleProblem\Handler\PuzzleSolutionCommand;
 use TalentedPanda\PuzzleProblem\Handler\PuzzleSolutionHandler;
 use TalentedPanda\PuzzleProblem\Model\Condition;
 use TalentedPanda\PuzzleProblem\Model\Piece;
-use TalentedPanda\PuzzleProblem\Model\Puzzle;
 use TalentedPanda\PuzzleProblem\Model\PuzzleInputDTO;
 use TalentedPanda\PuzzleProblem\Service\FileManager;
 use TalentedPanda\PuzzleProblem\Service\MatchFinder;
-use TalentedPanda\PuzzleProblem\Service\PuzzleSolver;
 
 class PuzzleController
 {
     /** @var MatchFinder */
     private $matchFinder;
-    /** @var PuzzleSolver */
-    private $puzzleSolver;
-    /** @var FileManager */
-    private $fileManager;
     /** @var PuzzleSolutionHandler */
     private $puzzleSolutionHandler;
+    /** @var FileManager */
+    private $fileManager;
 
     /**
      * PuzzleController constructor.
      * @param MatchFinder $matchFinder
-     * @param PuzzleSolver $puzzleSolver
-     * @param FileManager $fileManager
      * @param PuzzleSolutionHandler $puzzleSolutionHandler
+     * @param FileManager $fileManager
      */
-    public function __construct(MatchFinder $matchFinder, PuzzleSolver $puzzleSolver, FileManager $fileManager, PuzzleSolutionHandler $puzzleSolutionHandler)
+    public function __construct(MatchFinder $matchFinder, PuzzleSolutionHandler $puzzleSolutionHandler, FileManager $fileManager)
     {
         $this->matchFinder = $matchFinder;
-        $this->puzzleSolver = $puzzleSolver;
-        $this->fileManager = $fileManager;
         $this->puzzleSolutionHandler = $puzzleSolutionHandler;
+        $this->fileManager = $fileManager;
     }
 
     /**
      * @param PuzzleInputDTO $input
      * @throws \TalentedPanda\PuzzleProblem\Model\Exception\NonExistentPieceException
-     * @throws \TalentedPanda\PuzzleProblem\Model\Exception\NonValidFilePathException
      * @throws \TalentedPanda\PuzzleProblem\Model\Exception\NonValidPieceException
+     * @throws \Exception
      */
     public function solvePuzzleFromInputAction(PuzzleInputDTO $input): void
     {
@@ -56,7 +50,7 @@ class PuzzleController
 
         $firstPiece = $this->chooseFirstPiece($input);
 
-        $this->puzzleSolutionHandler->handle(
+        $puzzleName = $this->puzzleSolutionHandler->handle(
             PuzzleSolutionCommand::create(
                 $firstPiece,
                 $input->getPiecesBag()->remove($firstPiece),
@@ -65,18 +59,7 @@ class PuzzleController
             )
         );
 
-        echo "One solution for the puzzle inside the file is: \n";
-        $this->fileManager->readFromPublic(
-            'Solutions', $input->getFileName() . '_solution_' . date("H_i_s_d_m_Y") . '.' . FileManager::TXT_EXTENSION
-        );
-
-        exit;
-
-        /** @var Puzzle $puzzleSolution */
-        foreach ($this->puzzleSolver->solve($puzzle, $input->getPiecesBag()) as $puzzleSolution) {
-            print_r("One solution for the puzzle inside the file is: \n");
-            print_r($puzzleSolution . "\n\n");
-        }
+        print_r($this->fileManager->read($puzzleName));
     }
 
     /**

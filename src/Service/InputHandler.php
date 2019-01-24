@@ -32,7 +32,7 @@ class InputHandler
      */
     public function handle(string $fileName): PuzzleInputDTO
     {
-        $fileContent = $this->fileManager->readFromPuzzles($fileName);
+        $fileContent = $this->fileManager->readEachLine($fileName);
         $board = $this->buildBoard($fileContent);
 
         return PuzzleInputDTO::create(

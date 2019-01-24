@@ -34,33 +34,36 @@ class FileManager
     }
 
     /**
-     * @param string $folder
      * @param string $file
+     * @return array
+     *
      * @throws NonValidFilePathException
      */
-    public function readFromPublic(string $file)
+    public function read(string $file): array
     {
-        $this->setDocumentPath($this->publicPath . DIRECTORY_SEPARATOR . self::SOLUTIONS_FOLDER . DIRECTORY_SEPARATOR . $file . '.' . self::TXT_EXTENSION);
+        $this->setDocumentPath($file);
 
-        if (!$this->existWithData()) {
+        $content = fopen($this->getDocumentPath(), 'r');
+
+        if (empty($content)) {
             throw new NonValidFilePathException();
         }
 
-        $fileContent = fopen($document, "r");
-        echo fread($fileContent, filesize($document));
-        fclose($fileContent);
+        fclose($content);
+        return $content;
     }
 
     /**
      * @param string $file
      * @return array
+     *
      * @throws NonValidFilePathException
      */
-    public function readFromPuzzles(string $file): array
+    public function readEachLine(string $file): array
     {
         $lines = [];
 
-        $handle = fopen($this->puzzlesPath . DIRECTORY_SEPARATOR . $file . '.' . self::TXT_EXTENSION, "r");
+        $handle = fopen($this->getPuzzlesPath() . DIRECTORY_SEPARATOR . $file . '.' . self::TXT_EXTENSION, "r");
 
         if (empty($handle)) {
             throw new NonValidFilePathException();
@@ -75,35 +78,23 @@ class FileManager
     }
 
     /**
-     * @param string $file
      * @param string $content
      */
-    public function writeAttaching(string $file, string $content)
+    public function writeAttachingToPublic(string $content)
     {
-        if (!$this->existWithData()) {
-            $this->setDocumentPath($this->publicPath . DIRECTORY_SEPARATOR . self::SOLUTIONS_FOLDER . DIRECTORY_SEPARATOR . $file . '.' . self::TXT_EXTENSION);
-        }
-
         file_put_contents(
             $this->getDocumentPath(),
-            $content . "\n"
-
+            $content . "\n",
+            FILE_APPEND
         );
-//        $fileContent = fopen($document, "r");
-//        echo fread($fileContent, filesize($document));
-//        fclose($fileContent);
-
     }
 
     /**
-     * @param string $file
-     * @return bool
+     * @return string
      */
-    public function existWithData(): bool
+    public function getPuzzlesPath(): string
     {
-        $fileContent = fopen($this->getDocumentPath(), "r");
-        fclose($fileContent);
-        return (!empty($fileContent));
+        return $this->puzzlesPath;
     }
 
     /**
@@ -115,11 +106,10 @@ class FileManager
     }
 
     /**
-     * @param string $documentPath
+     * @param string $documentName
      */
-    public function setDocumentPath(string $documentPath): string
+    public function setDocumentPath(string $documentName)
     {
-        $this->documentPath = $documentPath;
+        $this->documentPath = $this->publicPath . DIRECTORY_SEPARATOR . self::SOLUTIONS_FOLDER . DIRECTORY_SEPARATOR . $documentName . '.' . self::TXT_EXTENSION;
     }
-
 }

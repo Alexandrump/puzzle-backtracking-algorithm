@@ -2,7 +2,7 @@
 require('vendor/autoload.php');
 
 use TalentedPanda\PuzzleProblem\DependencyInjection\ContainerLoader;
-use TalentedPanda\PuzzleProblem\EventHelper\EventPublisher;
+use TalentedPanda\PuzzleProblem\Service\EventHelper\EventPublisher;
 try {
     EventPublisher::instance()->register(
         [
@@ -11,7 +11,7 @@ try {
             ),
         ]
     );
+
 } catch (Exception $exception) {
     echo "It was impossible loading the application.\n";
 }
-
