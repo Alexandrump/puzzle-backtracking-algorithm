@@ -29,11 +29,12 @@ class Puzzle
      * @param Board $board
      * @param string $nameIdentifier
      */
-    protected function __construct(array $placedPieces, Board $board, $nameIdentifier = '')
+    protected function __construct(array $placedPieces, Board $board, $nameIdentifier = '', $puzzleName = '')
     {
         $this->board = $board;
         $this->placedPieces = $placedPieces;
         $this->nameIdentifier = empty($nameIdentifier) ? $this->createDefaultNameIdentifier() : $nameIdentifier;
+        $this->puzzleName = empty($puzzleName) ? $this->createDefaultPuzzleName() : $puzzleName;
     }
 
     /**
@@ -46,7 +47,6 @@ class Puzzle
     {
         $puzzle = new static([$initialPiece], $board);
         $puzzle->setCurrentCondition($initialCondition);
-        $puzzle->setPuzzleName();
 
         return $puzzle;
     }
@@ -54,15 +54,14 @@ class Puzzle
     /**
      * @param array $placedPieces
      * @param Board $board
-     * @param string $name
-     *
+     * @param string $identifier
+     * @param string $puzzleName
      * @return Puzzle
      */
-    public static function create(array $placedPieces, Board $board, string $name): Puzzle
+    public static function create(array $placedPieces, Board $board, string $identifier, string $puzzleName): Puzzle
     {
-        $puzzle = new static($placedPieces, $board, $name);
+        $puzzle = new static($placedPieces, $board, $identifier, $puzzleName);
         $puzzle->recalculateCondition();
-        $puzzle->setPuzzleName();
 
         return $puzzle;
     }
@@ -70,7 +69,7 @@ class Puzzle
     /**
      * @return Piece[]
      */
-    private function getPieces(): array
+    public function getPieces(): array
     {
         return $this->placedPieces;
     }
@@ -107,11 +106,6 @@ class Puzzle
         return $this->puzzleName;
     }
 
-    private function setPuzzleName(): void
-    {
-        $this->puzzleName = $this->namePuzzleFromDimension() . '_' . $this->getNameIdentifier();
-    }
-
     /**
      * @param Condition $currentCondition
      */
@@ -131,6 +125,7 @@ class Puzzle
             $puzzle = Puzzle::create(
                 array_merge($this->getPieces(), [$piece]),
                 $this->getBoard(),
+                $this->getNameIdentifier(),
                 $this->getPuzzleName()
             );
 
@@ -216,13 +211,20 @@ class Puzzle
         return $this->board->getWidth() . 'x' . $this->board->getHeight();
     }
 
-
     /**
      * @return string
      */
     private function createDefaultNameIdentifier(): string
     {
         return date("H_i_s_d_m_Y");
+    }
+
+    /**
+     * @return string
+     */
+    private function createDefaultPuzzleName(): string
+    {
+        return $this->namePuzzleFromDimension() . '_' . $this->getNameIdentifier();
     }
 
     /**

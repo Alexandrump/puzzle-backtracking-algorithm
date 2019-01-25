@@ -3,6 +3,7 @@ require('vendor/autoload.php');
 
 use TalentedPanda\PuzzleProblem\DependencyInjection\ContainerLoader;
 use TalentedPanda\PuzzleProblem\Service\EventHelper\EventPublisher;
+
 try {
     EventPublisher::instance()->register(
         [

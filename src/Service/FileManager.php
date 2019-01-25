@@ -20,7 +20,7 @@ class FileManager
     /** @var string */
     private $publicPath;
     /** @var string */
-    private $documentPath;
+    private $documentPath = '';
 
     /**
      * FileManager constructor.
@@ -35,22 +35,13 @@ class FileManager
 
     /**
      * @param string $file
-     * @return array
-     *
-     * @throws NonValidFilePathException
+     * @return false|string
      */
-    public function read(string $file): array
+    public function read(string $file)
     {
         $this->setDocumentPath($file);
 
-        $content = fopen($this->getDocumentPath(), 'r');
-
-        if (empty($content)) {
-            throw new NonValidFilePathException();
-        }
-
-        fclose($content);
-        return $content;
+        return file_get_contents($this->getDocumentPath());
     }
 
     /**
