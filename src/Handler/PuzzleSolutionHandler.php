@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 23/01/19
  * Time: 8:49
  */
@@ -32,12 +31,10 @@ class PuzzleSolutionHandler
 
     /**
      * @param PuzzleSolutionCommand $puzzleSolutionCommand
-     *
      * @return string
-     *
      * @throws \Exception
      */
-    public function handle(PuzzleSolutionCommand $puzzleSolutionCommand)
+    public function handle(PuzzleSolutionCommand $puzzleSolutionCommand): string
     {
         $puzzle = Puzzle::createFromCorner(
             $puzzleSolutionCommand->getFirstPiece(),

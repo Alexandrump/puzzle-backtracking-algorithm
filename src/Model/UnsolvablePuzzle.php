@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 9/01/19
  * Time: 17:05
  */
@@ -24,16 +23,9 @@ class UnsolvablePuzzle extends Puzzle
      * @param Board $board
      * @return UnsolvablePuzzle
      */
-    public static function createEmpty(Board $board)
+    public static function createEmpty(Board $board): UnsolvablePuzzle
     {
         return new static([], $board);
     }
 
-//    /**
-//     * @return Condition
-//     */
-//    public function getCurrentCondition(): Condition
-//    {
-//        return Condition::create(Piece::OUTER_SIDE_PART, Piece::OUTER_SIDE_PART, Piece::OUTER_SIDE_PART, Piece::OUTER_SIDE_PART);
-//    }
 }

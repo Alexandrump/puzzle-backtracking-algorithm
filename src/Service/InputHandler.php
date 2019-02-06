@@ -1,13 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 16/01/19
  * Time: 10:08
  */
 
 namespace TalentedPanda\PuzzleProblem\Service;
-
 
 use TalentedPanda\PuzzleProblem\Model\Board;
 use TalentedPanda\PuzzleProblem\Model\Exception\NonValidFilePathException;
@@ -17,8 +15,15 @@ use TalentedPanda\PuzzleProblem\Model\PuzzleInputDTO;
 
 class InputHandler
 {
+    /**
+     * @var FileManager
+     */
     private $fileManager;
 
+    /**
+     * InputHandler constructor.
+     * @param FileManager $fileManager
+     */
     public function __construct(FileManager $fileManager)
     {
         $this->fileManager = $fileManager;

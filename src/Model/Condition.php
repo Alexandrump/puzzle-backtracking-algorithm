@@ -49,7 +49,7 @@ class Condition
     /**
      * @return Condition
      */
-    public static function createDefaultInitial()
+    public static function createDefaultInitial(): Condition
     {
         return self::create(0, 0, self::ANY_SIDE_TYPE, self::ANY_SIDE_TYPE);
     }
@@ -70,7 +70,7 @@ class Condition
     /**
      * @return array
      */
-    public function getSideConditions()
+    public function getSideConditions(): array
     {
         return $this->sideCondition;
     }

@@ -53,5 +53,4 @@ class Board
         return $this->totalNumberOfPieces;
     }
 
-
 }

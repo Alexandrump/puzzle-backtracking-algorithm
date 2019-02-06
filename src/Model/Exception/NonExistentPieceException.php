@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 10/01/19
  * Time: 11:13
  */
@@ -17,6 +16,6 @@ class NonExistentPieceException extends \Exception
      */
     public function __construct()
     {
-        return parent::__construct("The content of the file is not valid to solve the puzzle.");
+        return parent::__construct("\nThe content of the file is not valid to solve the puzzle.\n");
     }
 }

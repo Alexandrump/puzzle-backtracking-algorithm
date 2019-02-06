@@ -15,10 +15,9 @@ trait EventPublishingTrait
 {
     /**
      * @param Event $event
-     *
      * @throws \Exception
      */
-    private function publishEvent(Event $event)
+    private function publishEvent(Event $event): void
     {
         EventPublisher::instance()->publish($event);
     }

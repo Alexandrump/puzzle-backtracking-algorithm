@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 15/01/19
  * Time: 15:42
  */
@@ -15,6 +14,7 @@ use TalentedPanda\PuzzleProblem\Model\Piece;
 use TalentedPanda\PuzzleProblem\Model\PuzzleInputDTO;
 use TalentedPanda\PuzzleProblem\Service\FileManager;
 use TalentedPanda\PuzzleProblem\Service\MatchFinder;
+use TalentedPanda\PuzzleProblem\Service\SolutionsCLIPresenter;
 
 class PuzzleController
 {
@@ -24,18 +24,22 @@ class PuzzleController
     private $puzzleSolutionHandler;
     /** @var FileManager */
     private $fileManager;
+    /** @var SolutionsCLIPresenter */
+    private $solutionsCLIPresenter;
 
     /**
      * PuzzleController constructor.
      * @param MatchFinder $matchFinder
      * @param PuzzleSolutionHandler $puzzleSolutionHandler
      * @param FileManager $fileManager
+     * @param SolutionsCLIPresenter $solutionsCLIPresenter
      */
-    public function __construct(MatchFinder $matchFinder, PuzzleSolutionHandler $puzzleSolutionHandler, FileManager $fileManager)
+    public function __construct(MatchFinder $matchFinder, PuzzleSolutionHandler $puzzleSolutionHandler, FileManager $fileManager, SolutionsCLIPresenter $solutionsCLIPresenter)
     {
         $this->matchFinder = $matchFinder;
         $this->puzzleSolutionHandler = $puzzleSolutionHandler;
         $this->fileManager = $fileManager;
+        $this->solutionsCLIPresenter = $solutionsCLIPresenter;
     }
 
     /**
@@ -46,11 +50,9 @@ class PuzzleController
      */
     public function solvePuzzleFromInputAction(PuzzleInputDTO $input): void
     {
-        print_r("\nSolving the puzzle...please be patient. \n\n");
-
         $firstPiece = $this->chooseFirstPiece($input);
 
-        $puzzleName = $this->puzzleSolutionHandler->handle(
+        $this->puzzleSolutionHandler->handle(
             PuzzleSolutionCommand::create(
                 $firstPiece,
                 $input->getPiecesBag()->remove($firstPiece),
@@ -59,7 +61,10 @@ class PuzzleController
             )
         );
 
-        print_r($this->fileManager->read($puzzleName));
+        $this->solutionsCLIPresenter->render(
+            $this->fileManager->readSolutions(),
+            $input->getBoard()
+        );
     }
 
     /**
@@ -68,7 +73,7 @@ class PuzzleController
      * @throws \TalentedPanda\PuzzleProblem\Model\Exception\NonExistentPieceException
      * @throws \TalentedPanda\PuzzleProblem\Model\Exception\NonValidPieceException
      */
-    private function chooseFirstPiece(PuzzleInputDTO $input)
+    private function chooseFirstPiece(PuzzleInputDTO $input): Piece
     {
         return $this->matchFinder->findOneCandidate(
             $input->getPiecesBag()->getRemainingPieces(),
@@ -81,7 +86,7 @@ class PuzzleController
      * @param Piece $firstPiece
      * @return Condition
      */
-    private function chooseInitialCondition(PuzzleInputDTO $input, Piece $firstPiece)
+    private function chooseInitialCondition(PuzzleInputDTO $input, Piece $firstPiece): Condition
     {
         return $input->getBoard()->getWidth() !== 2 ?
             Condition::create(

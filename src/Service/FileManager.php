@@ -12,13 +12,14 @@ class FileManager
 {
     /** @var string */
     const TXT_EXTENSION = 'txt';
-    /** @var string */
-    const SOLUTIONS_FOLDER = 'Solutions';
+    const JSON_EXTENSION = 'json';
 
     /** @var string */
     private $puzzlesPath;
     /** @var string */
     private $publicPath;
+    /** @var string */
+    private $solutionsFolder;
     /** @var string */
     private $documentPath = '';
 
@@ -26,22 +27,38 @@ class FileManager
      * FileManager constructor.
      * @param string $defaultPath
      * @param string $publicPath
+     * @param string $solutionsFolder
      */
-    public function __construct(string $defaultPath, string $publicPath)
+    public function __construct(string $defaultPath, string $publicPath, string $solutionsFolder)
     {
         $this->puzzlesPath = $defaultPath;
         $this->publicPath = $publicPath;
+        $this->solutionsFolder = $solutionsFolder;
     }
 
     /**
-     * @param string $file
-     * @return false|string
+     * @return string
      */
-    public function read(string $file)
+    public function getPuzzlesPath(): string
     {
-        $this->setDocumentPath($file);
+        return $this->puzzlesPath;
+    }
 
-        return file_get_contents($this->getDocumentPath());
+    /**
+     * @return string
+     */
+    public function getDocumentPath(): string
+    {
+        return $this->documentPath;
+    }
+
+    /**
+     * @param string $documentName
+     * @param string $extension
+     */
+    public function setDocumentPath(string $documentName, string $extension = self::TXT_EXTENSION): void
+    {
+        $this->documentPath = $this->publicPath . DIRECTORY_SEPARATOR . $this->solutionsFolder . DIRECTORY_SEPARATOR . $documentName . '.' . $extension;
     }
 
     /**
@@ -69,38 +86,22 @@ class FileManager
     }
 
     /**
-     * @param string $content
+     * @return false|string
      */
-    public function writeAttachingToPublic(string $content)
+    public function readSolutions(): ?string
+    {
+        return file_get_contents($this->getDocumentPath());
+    }
+
+    /**
+     * @param $content
+     */
+    public function writeSolutions($content): void
     {
         file_put_contents(
             $this->getDocumentPath(),
-            $content . "\n",
-            FILE_APPEND
+            $content . "\n"
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getPuzzlesPath(): string
-    {
-        return $this->puzzlesPath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDocumentPath(): string
-    {
-        return $this->documentPath;
-    }
-
-    /**
-     * @param string $documentName
-     */
-    public function setDocumentPath(string $documentName)
-    {
-        $this->documentPath = $this->publicPath . DIRECTORY_SEPARATOR . self::SOLUTIONS_FOLDER . DIRECTORY_SEPARATOR . $documentName . '.' . self::TXT_EXTENSION;
-    }
 }

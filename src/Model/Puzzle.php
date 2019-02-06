@@ -43,7 +43,7 @@ class Puzzle
      * @param Condition $initialCondition
      * @return Puzzle
      */
-    public static function createFromCorner(Piece $initialPiece, Board $board, Condition $initialCondition)
+    public static function createFromCorner(Piece $initialPiece, Board $board, Condition $initialCondition): Puzzle
     {
         $puzzle = new static([$initialPiece], $board);
         $puzzle->setCurrentCondition($initialCondition);
@@ -230,7 +230,7 @@ class Puzzle
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $puzzle = '';
         foreach ($this->placedPieces as $iteration => $piece) {

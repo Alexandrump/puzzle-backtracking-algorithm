@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 16/01/19
  * Time: 9:19
  */

@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 22/01/19
  * Time: 14:39
  */
@@ -33,7 +32,7 @@ class PuzzleFound implements Event
     /**
      * @return \DateTimeImmutable
      */
-    public function occuredOn()
+    public function occuredOn(): \DateTimeImmutable
     {
         return $this->occuredOn;
     }
@@ -41,7 +40,7 @@ class PuzzleFound implements Event
     /**
      * @return Puzzle
      */
-    public function getPuzzle()
+    public function getPuzzle(): Puzzle
     {
         return $this->puzzle;
     }

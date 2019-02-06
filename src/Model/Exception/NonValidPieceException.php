@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 8/01/19
  * Time: 17:24
  */
@@ -15,7 +14,7 @@ class NonValidPieceException extends \Exception
      * NonValidPieceException constructor.
      * @param string $message
      */
-    public function __construct($message = 'The piece is not valid.')
+    public function __construct($message = "\nThe piece is not valid.\n")
     {
         parent::__construct($message);
     }
@@ -26,7 +25,7 @@ class NonValidPieceException extends \Exception
      */
     public static function createWithLocated($piecePosition): NonValidPieceException
     {
-        return new static("The piece number $piecePosition in the Piece Bag is not valid.");
+        return new static("\nThe piece number $piecePosition in the Piece Bag is not valid.\n");
     }
 
 }

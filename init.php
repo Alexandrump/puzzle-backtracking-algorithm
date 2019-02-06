@@ -4,6 +4,8 @@ require('vendor/autoload.php');
 use TalentedPanda\PuzzleProblem\DependencyInjection\ContainerLoader;
 use TalentedPanda\PuzzleProblem\Service\EventHelper\EventPublisher;
 
+error_reporting(E_ERROR | E_PARSE);
+
 try {
     EventPublisher::instance()->register(
         [

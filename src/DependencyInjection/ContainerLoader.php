@@ -1,16 +1,16 @@
 <?php
 
+/**
+ * @author: Alejandro Martínez Peregrina
+ * @date: 9/01/19
+ */
+
 namespace TalentedPanda\PuzzleProblem\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 
-/**
- * This is the class that loads and manages your bundle configuration.
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
- */
 class ContainerLoader
 {
 
@@ -21,7 +21,7 @@ class ContainerLoader
      * @return ContainerBuilder|null
      * @throws \Exception
      */
-    public static function instance()
+    public static function instance(): ?ContainerBuilder
     {
         if (null === static::$instance) {
             static::$instance = self::load();
@@ -34,7 +34,7 @@ class ContainerLoader
      * @return ContainerBuilder
      * @throws \Exception
      */
-    private static function load()
+    private static function load(): ContainerBuilder
     {
         $container = new ContainerBuilder();
 

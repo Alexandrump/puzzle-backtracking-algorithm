@@ -35,7 +35,7 @@ class PuzzleSolver
     public function solve(Puzzle $puzzle, PiecesBag $piecesBag): Puzzle
     {
         if (count($piecesBag->getRemainingPieces()) === 0 || $puzzle instanceof UnsolvablePuzzle) {
-            echo "Final iteration done!.\n\n";
+            //echo "Iteration done! Used:" . round((memory_get_usage() / 1048576), 2) . " MB \n\n";
             return $puzzle;
         }
 
@@ -58,8 +58,6 @@ class PuzzleSolver
             }
         }
 
-        echo "Partial iteration done! Using:" . round((memory_get_usage() / 1048576), 2) . " MB \n";
-        echo "-- Pieces Inside the Bag: " . count($piecesBag->getRemainingPieces()) . '. Placed Pieces: ' . $puzzle->totalPlacedPieces() . "\n";
         return UnsolvablePuzzle::createEmpty($puzzle->getBoard());
     }
 }

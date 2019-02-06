@@ -1,13 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 23/01/19
  * Time: 8:55
  */
 
 namespace TalentedPanda\PuzzleProblem\Handler;
-
 
 use TalentedPanda\PuzzleProblem\Model\Board;
 use TalentedPanda\PuzzleProblem\Model\Condition;
@@ -22,7 +20,7 @@ class PuzzleSolutionCommand
     private $piecesBag;
     /** @var Condition */
     private $initialCondition;
-    /** @var Board  */
+    /** @var Board */
     private $board;
 
     /**
@@ -47,7 +45,7 @@ class PuzzleSolutionCommand
      * @param Board $board
      * @return PuzzleSolutionCommand
      */
-    public static function create(Piece $firstPiece, PiecesBag $piecesBag, Condition $initialCondition, Board $board)
+    public static function create(Piece $firstPiece, PiecesBag $piecesBag, Condition $initialCondition, Board $board): PuzzleSolutionCommand
     {
         return new static($firstPiece, $piecesBag, $initialCondition, $board);
     }

@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alejandro.martinez
+ * User: Alejandro Martínez Peregrina
  * Date: 15/01/19
  * Time: 11:30
  */
@@ -16,7 +15,7 @@ class NonValidFilePathException extends \Exception
      */
     public function __construct()
     {
-        return parent::__construct("This path doesn't exists.");
+        return parent::__construct("\nThis file doesn't exists.\n");
     }
 
 }

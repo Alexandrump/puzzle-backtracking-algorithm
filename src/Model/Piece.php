@@ -29,7 +29,7 @@ class Piece
     public function __construct(int $position, array $sides)
     {
         if (!$this->isValid($sides)) {
-            throw NonValidPieceException::create($position);
+            throw NonValidPieceException::createWithLocated($position);
         }
 
         $this->position = $position;
@@ -195,6 +195,6 @@ class Piece
      */
     public function __toString(): string
     {
-        return json_encode($this->sides);
+        return json_encode($this->position);
     }
 }

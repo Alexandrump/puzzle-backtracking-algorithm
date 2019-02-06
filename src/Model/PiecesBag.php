@@ -28,7 +28,7 @@ class PiecesBag
      * @return PiecesBag
      * @throws NonValidPiecesBagException
      */
-    public static function initialize(array $initialPieces, int $totalExpectedPieces)
+    public static function initialize(array $initialPieces, int $totalExpectedPieces): PiecesBag
     {
         $piecesBag = new PiecesBag(
             self::processPieces(
@@ -47,7 +47,7 @@ class PiecesBag
      * @param $remainingPieces
      * @return PiecesBag
      */
-    public static function createFromArray($remainingPieces)
+    public static function createFromArray($remainingPieces): PiecesBag
     {
         return new static($remainingPieces);
     }

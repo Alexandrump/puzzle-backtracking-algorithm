@@ -8,6 +8,7 @@ services:
       - '@talented_panda.puzzle_problem.service.match_finder'
       - '@talented_panda.puzzle_problem.service.solution_handler'
       - '@talented_panda.puzzle_problem.service.file_manager'
+      - '@talented_panda.puzzle_problem.service.solutions_cli_presenter'
 
   #Handlers
 
@@ -29,6 +30,7 @@ services:
     arguments:
       - '%default_puzzle_path%'
       - '%default_public_path%'
+      - '%solutions_path%'
 
   talented_panda.puzzle_problem.service.match_finder:
     class: TalentedPanda\PuzzleProblem\Service\MatchFinder
@@ -37,6 +39,9 @@ services:
     class: TalentedPanda\PuzzleProblem\Service\PuzzleSolver
     arguments:
       - '@talented_panda.puzzle_problem.service.match_finder'
+
+  talented_panda.puzzle_problem.service.solutions_cli_presenter:
+    class: TalentedPanda\PuzzleProblem\Service\SolutionsCLIPresenter
 
   #Event Subscribers
 
