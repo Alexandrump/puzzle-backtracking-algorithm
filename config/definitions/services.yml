@@ -1,0 +1,51 @@
+services:
+
+  #Controllers
+
+  talented_panda.puzzle_problem.controller.puzzle:
+    class: TalentedPanda\PuzzleProblem\Controller\PuzzleController
+    arguments:
+      - '@talented_panda.puzzle_problem.service.match_finder'
+      - '@talented_panda.puzzle_problem.service.solution_handler'
+      - '@talented_panda.puzzle_problem.service.file_manager'
+      - '@talented_panda.puzzle_problem.service.solutions_cli_presenter'
+
+  #Handlers
+
+  talented_panda.puzzle_problem.service.solution_handler:
+    class: TalentedPanda\PuzzleProblem\Handler\PuzzleSolutionHandler
+    arguments:
+      - '@talented_panda.puzzle_problem.service.puzzle_solver'
+      - '@talented_panda.puzzle_problem.service.file_manager'
+
+  #Services
+
+  talented_panda.puzzle_problem.service.input_handler:
+    class: TalentedPanda\PuzzleProblem\Service\InputHandler
+    arguments:
+      - '@talented_panda.puzzle_problem.service.file_manager'
+
+  talented_panda.puzzle_problem.service.file_manager:
+    class: TalentedPanda\PuzzleProblem\Service\FileManager
+    arguments:
+      - '%default_puzzle_path%'
+      - '%default_public_path%'
+      - '%solutions_path%'
+
+  talented_panda.puzzle_problem.service.match_finder:
+    class: TalentedPanda\PuzzleProblem\Service\MatchFinder
+
+  talented_panda.puzzle_problem.service.puzzle_solver:
+    class: TalentedPanda\PuzzleProblem\Service\PuzzleSolver
+    arguments:
+      - '@talented_panda.puzzle_problem.service.match_finder'
+
+  talented_panda.puzzle_problem.service.solutions_cli_presenter:
+    class: TalentedPanda\PuzzleProblem\Service\SolutionsCLIPresenter
+
+  #Event Subscribers
+
+  talented_panda.puzzle_problem.event.puzzle_found_subscriber:
+    class: TalentedPanda\PuzzleProblem\Subscriber\PuzzleFoundSubscriber
+    arguments:
+      - '@talented_panda.puzzle_problem.service.file_manager'

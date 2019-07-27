@@ -1,0 +1,51 @@
+{
+  "name": "PuzzleProblem",
+  "description": "PuzzleProblem",
+  "type": "library",
+  "require": {
+    "php": "^7.2",
+    "symfony/dependency-injection": "^3.4",
+    "symfony/config": "^3.4",
+    "symfony/yaml": "^3.4",
+    "symfony/filesystem": "~3.0",
+    "symfony/expression-language": "3.4",
+    "symfony/cache": "^3.0",
+    "incenteev/composer-parameter-handler": "^2.0"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.3",
+    "escapestudios/symfony2-coding-standard": "^3.4",
+    "phpmd/phpmd": "^2.6",
+    "friendsofphp/php-cs-fixer": "^2.13"
+  },
+  "autoload": {
+    "psr-4": {
+      "TalentedPanda\\PuzzleProblem\\": "src/"
+    }
+  },
+  "scripts": {
+    "create-parameters": [
+      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+    ],
+    "post-install-cmd": [
+      "[ $COMPOSER_DEV_MODE -eq 0 ] || composer ensure-clean-code",
+      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+    ],
+    "post-update-cmd": [
+      "[ $COMPOSER_DEV_MODE -eq 0 ] || composer ensure-clean-code",
+      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+    ],
+    "ensure-clean-code": [
+      "./vendor/bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard",
+      "./vendor/bin/phpcs -i",
+      "phpcs --config-set default_standard Symfony"
+    ]
+  },
+  "extra": {
+    "incenteev-parameters": {
+      "file": "config/parameters.yml",
+      "dist-file": "config/parameters.yml.dist"
+    }
+  },
+  "license": "GNU Lesser General Public License version 3"
+}

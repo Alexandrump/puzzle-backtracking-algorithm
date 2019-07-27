@@ -1,0 +1,15 @@
+version: '3'
+services:
+  puzzle-php:
+    container_name: puzzle-php
+    image: sgadpsf/php-fpm-7.2:latest
+    networks:
+      - isolated_nw
+    volumes:
+      - ./:/var/www/html/puzzle:rw
+      - ~/.temp_projects/puzzle/docker_persistence/php/log/php5-fpm:/var/log/php5-fpm:rw
+      - ~/.temp_projects/puzzle/docker_persistence/.composer:/var/www/.composer:rw
+#      - ~/.ssh:/var/www/.ssh
+
+networks:
+  isolated_nw:
